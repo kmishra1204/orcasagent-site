@@ -44,6 +44,7 @@
     
     <!-- Style Sheets -->
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <script>
 window.onerror = function(msg, url, lineNo, columnNo, error) {
@@ -255,6 +256,7 @@ window.onerror = function(msg, url, lineNo, columnNo, error) {
                 <a href="#control-plane-section" class="nav-link">Control Plane</a>
                 <a href="#chamber-governance" class="nav-link">Governance</a>
                 <a href="dashboard.html" class="nav-link" style="color: var(--glow-cyan); font-weight: 600;"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+                <a href="adlc.html" class="nav-link" style="color: #10B981; font-weight: 600;"><i class="fa-solid fa-arrows-spin"></i> ADLC Simulator</a>
                 <a href="#chamber-evidence" class="nav-link">Evidence</a>
                 <a href="#assessment" class="btn btn-primary" style="padding: 0.4rem 1rem; font-size: 0.8rem;">Assessment</a>
             </nav>
@@ -282,10 +284,10 @@ window.onerror = function(msg, url, lineNo, columnNo, error) {
                     <div class="hero-content">
                         <span class="mono" style="color: var(--color-cyan-500); text-transform: uppercase; font-weight: 600; letter-spacing: 0.1em; display: inline-block; margin-bottom: 0.75rem;">Enterprise Orchestrator</span>
                         <h1>Governed enterprise agent operations from intent to outcome.</h1>
-                        <p class="lead">Enterprise agents are not hard to imagine—they are hard to govern, prove, scale, and trust. OrcasAgent&trade; coordinates agents, tools, models, and evidence under a governed operating model, turning experimental AI into controlled enterprise delivery.</p>
+                        <p class="lead">Enterprise agent scaling, solved with evidence.</p>
                         <div class="hero-actions">
-                            <a href="#assessment" class="btn btn-primary" id="btn-hero-assess">Request an assessment</a>
-                            <a href="#operating-model" class="btn btn-secondary" id="btn-hero-arch">View the operating flow</a>
+                            <a href="dashboard.html" class="btn btn-primary" id="btn-hero-dashboard"><i class="fa-solid fa-chart-line"></i> Launch Operational Dashboard</a>
+                            <a href="adlc.html" class="btn btn-secondary" id="btn-hero-adlc" style="border-color: #10B981; color: #10B981;"><i class="fa-solid fa-arrows-spin animate-spin-slow"></i> Run ADLC Simulator</a>
                         </div>
                         <div class="proof-bar" style="display: flex; align-items: center; gap: 2rem; margin-top: 2rem; border-top: 1px solid var(--color-border-200); padding-top: 1.5rem;">
                             <div style="font-size: 0.8rem; color: var(--color-slate-600);"><strong style="color: var(--color-navy-900);">Maturity:</strong> Evidence-Led Proof-of-Concept</div>
@@ -363,7 +365,7 @@ window.onerror = function(msg, url, lineNo, columnNo, error) {
                 <div class="section-header" style="text-align: center; margin-bottom: 3rem;">
                     <span class="mono" style="color: var(--color-cyan-500); text-transform: uppercase; font-weight: 600; font-size: 0.8rem; letter-spacing: 0.05em;">Interactive Ecosystem Explorer</span>
                     <h2 style="margin-top: 0.5rem; font-size: 2.25rem;">Explore the NSAM Ecosystem Chambers</h2>
-                    <p style="max-width: 600px; margin: 0.5rem auto 0 auto; color: var(--color-slate-600);">Click any chamber below to enter, expand deep technical structures, and view live governed operations.</p>
+                    <p style="max-width: 600px; margin: 0.5rem auto 0 auto; color: var(--color-slate-600);">Click any chamber to explore live governed agent operations.</p>
                 </div>
                 
                 <div class="gateway-grid">
@@ -372,7 +374,7 @@ window.onerror = function(msg, url, lineNo, columnNo, error) {
                         <div>
                             <div class="gateway-icon">âšƒ</div>
                             <h3>Core Architecture</h3>
-                            <p>Understand the problem, platform components, OrcasAgent&trade; core capabilities, and private mesh security layout.</p>
+                            <p>Explore private mesh architecture and core agent capabilities.</p>
                         </div>
                         <div class="gateway-action">Explore Architecture â†’</div>
                     </div>
@@ -382,7 +384,7 @@ window.onerror = function(msg, url, lineNo, columnNo, error) {
                         <div>
                             <div class="gateway-icon">âš™</div>
                             <h3>Operating Sequence</h3>
-                            <p>See the controlled execution flow from intent to runtime, and watch the SRE terminal simulator in action.</p>
+                            <p>Watch the secure multi-stage execution sequence in real-time.</p>
                         </div>
                         <div class="gateway-action">Watch Sequence â†’</div>
                     </div>
@@ -392,7 +394,7 @@ window.onerror = function(msg, url, lineNo, columnNo, error) {
                         <div>
                             <div class="gateway-icon">â˜Š</div>
                             <h3>Sovereign Controls</h3>
-                            <p>Inspect Neo4j memory graphs, examine live SRE block Dockets, review cost routing, and check compliance metrics.</p>
+                            <p>Query persistent memory graphs and inspect ledger compliance dockets.</p>
                         </div>
                         <div class="gateway-action">Inspect Controls â†’</div>
                     </div>
@@ -402,7 +404,7 @@ window.onerror = function(msg, url, lineNo, columnNo, error) {
                         <div>
                             <div class="gateway-icon">âŽ˜</div>
                             <h3>Proof &amp; Use Cases</h3>
-                            <p>Explore real-world enterprise use cases, review recorded audit artifacts, and compare platform specifications.</p>
+                            <p>Review cryptographic audit evidence and technical platform specifications.</p>
                         </div>
                         <div class="gateway-action">View Evidence â†’</div>
                     </div>
@@ -424,7 +426,7 @@ window.onerror = function(msg, url, lineNo, columnNo, error) {
                 <div class="section-header" style="text-align: center; margin-bottom: 3.5rem; max-width: 850px; margin-left: auto; margin-right: auto;">
                     <span class="mono" style="color: var(--color-cyan-500); text-transform: uppercase; font-weight: 600; font-size: 0.8rem; letter-spacing: 0.1em; display: inline-block; margin-bottom: 0.5rem;">Dynamic Sandbox Spawner</span>
                     <h2 style="margin-top: 0.5rem; font-size: 2.5rem; font-family: var(--font-heading);">OrcasAgent&trade; Control Plane Sandbox Factory</h2>
-                    <p style="color: var(--color-slate-600); font-size: 1.1rem; max-width: 700px; margin: 0.5rem auto 0 auto;">Select an intent, select model routing parameters, configure safety boundaries, and watch the OrcasAgent&trade; orchestrate planning, SHA-256 docket sealing, isolated container boot-up, and registry promotion.</p>
+                    <p style="color: var(--color-slate-600); font-size: 1.1rem; max-width: 700px; margin: 0.5rem auto 0 auto;">Select intent and safety boundaries to spawn a secure containerized sandbox.</p>
                 </div>
 
                 <div class="factory-container" style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 3rem; background: var(--color-white); border: 1px solid var(--color-border-200); border-radius: 12px; padding: 2.5rem; box-shadow: 0 20px 50px rgba(7, 26, 68, 0.04); position: relative; z-index: 10;">
@@ -565,7 +567,7 @@ window.onerror = function(msg, url, lineNo, columnNo, error) {
                 <div class="section-header" style="text-align: center; margin-bottom: 3.5rem;">
                     <span class="mono" style="color: var(--color-cyan-500); text-transform: uppercase; font-weight: 600; font-size: 0.8rem; letter-spacing: 0.1em;">NSAM Programmatic Operations</span>
                     <h2 style="margin-top: 0.5rem; font-size: 2.5rem; font-family: var(--font-heading);">20-Capability Control Plane</h2>
-                    <p style="max-width: 750px; margin: 0.5rem auto 0 auto; color: var(--color-slate-600); font-size: 1.1rem;">Explore the exact programmatic capabilities OrcasAgent&trade; uses to build, govern, and deploy autonomous sandbox agents.</p>
+                    <p style="max-width: 750px; margin: 0.5rem auto 0 auto; color: var(--color-slate-600); font-size: 1.1rem;">Inspect the SRE control commands and API seams powering the orchestrator.</p>
                 </div>
                 
                 <div class="cp-layout">
@@ -640,7 +642,7 @@ window.onerror = function(msg, url, lineNo, columnNo, error) {
                         <div>
                             <div class="gateway-icon">âšƒ</div>
                             <h3>Core Architecture</h3>
-                            <p>Understand the problem, platform components, OrcasAgent core capabilities, and private mesh security layout.</p>
+                            <p>Explore private mesh architecture and core agent capabilities.</p>
                         </div>
                         <div class="gateway-action">Explore Architecture â†’</div>
                     </div>
@@ -680,7 +682,7 @@ window.onerror = function(msg, url, lineNo, columnNo, error) {
                         <div>
                             <div class="gateway-icon">ðŸ¬</div>
                             <h3>Brand &amp; Assets</h3>
-                            <p>Explore the cybernetic design system, view high-res brand icons, download assets, and inspect the dynamic Orca spinner.</p>
+                            <p>View cybernetic design assets and the dynamic brand spinner.</p>
                         </div>
                         <div class="gateway-action">Enter Brand Chamber â†’</div>
                     </div>
@@ -711,32 +713,32 @@ window.onerror = function(msg, url, lineNo, columnNo, error) {
                 <div class="section-header">
                     <span class="mono" style="color: var(--color-red-500); text-transform: uppercase; font-weight: 600; font-size: 0.8rem; letter-spacing: 0.05em;">Enterprise Challenge</span>
                     <h2 style="margin-top: 0.5rem;">Enterprises do not need more unmanaged agents.</h2>
-                    <p>Creating agents is becoming easier. Governing their work is still difficult. Enterprise teams need to know what an agent was asked to do, what knowledge it used, which tools it touched, which model handled the task, what approvals applied, what evidence was captured, and what outcome was delivered.</p>
+                    <p>Governing autonomous agents requires complete visibility over models, tools, and execution scopes.</p>
                 </div>
                 
                 <div class="collapsible-content" id="problem-details">
                     <div class="problem-grid" style="margin-top: 1rem; padding-top: 1rem;">
                         <div class="problem-card unmanaged">
                             <h3>Unmanaged Agent Sprawl</h3>
-                            <p style="font-size: 0.9rem; margin-top: 0.5rem; margin-bottom: 1.5rem;">Uncontrolled scripts and unrecorded agent networks accessing internal data resources directly with no release gates.</p>
+                            <p style="font-size: 0.9rem; margin-top: 0.5rem; margin-bottom: 1.5rem;">Uncontrolled scripts accessing internal data with no gates.</p>
                             <ul class="problem-points">
-                                <li>Agents cross system boundaries without sandbox clearance.</li>
-                                <li>Improvised model selections ignore quality, latency, and cloud spend.</li>
-                                <li>Tool calls run with unreviewable database and server execution bounds.</li>
-                                <li>Zero memory persistence makes audits and compliance reviews impossible.</li>
-                                <li>Operations teams get endless chat logs instead of clean, auditable evidence.</li>
+                                <li>Zero sandbox clearance</li>
+                                <li>Improvised model routing</li>
+                                <li>Unregulated tool scopes</li>
+                                <li>No audit persistence</li>
+                                <li>Bulk chat logs only</li>
                             </ul>
                         </div>
                         
                         <div class="problem-card governed">
                             <h3>Governed Operational Flow</h3>
-                            <p style="font-size: 0.9rem; margin-top: 0.5rem; margin-bottom: 1.5rem;">Centralised orchestration coordinating intents, validation proof, and outcome metrics through structured compliance gates.</p>
+                            <p style="font-size: 0.9rem; margin-top: 0.5rem; margin-bottom: 1.5rem;">Centralized orchestration with structured compliance gates.</p>
                             <ul class="problem-points">
-                                <li>Sandbox execution and assertions run prior to resource mutation.</li>
-                                <li>Model routing is governed by target lanes, cost constraints, and evaluations.</li>
-                                <li>Tools execute inside scoped parameters authenticated by user/agent permissions.</li>
-                                <li>Second Brain persistent graph maps every relationship, knowledge source, and edit.</li>
-                                <li>Dockets create reproducible outcome logs reviewable by operations managers.</li>
+                                <li>Pre-flight sandboxes</li>
+                                <li>Governed model routing</li>
+                                <li>Least-privilege scopes</li>
+                                <li>Graph persistent memory</li>
+                                <li>Immutable outcome dockets</li>
                             </ul>
                         </div>
                     </div>
@@ -754,7 +756,7 @@ window.onerror = function(msg, url, lineNo, columnNo, error) {
                 <div class="section-header">
                     <span class="mono" style="color: var(--color-cyan-500); text-transform: uppercase; font-weight: 600; font-size: 0.8rem; letter-spacing: 0.05em;">Product Family</span>
                     <h2 style="margin-top: 0.5rem;">The platform, the orchestrator, the memory, and the work record.</h2>
-                    <p>NSAM is the enterprise intelligence platform. OrcasAgent&trade; is the orchestration agent. Second Brain is the persistent memory and evidence layer. A Docket is the governed work record that captures plan, scope, approvals, proof, risk, and release state.</p>
+                    <p>The core suite powering secure, auditable, and self-documenting AI operations.</p>
                 </div>
                 
                 <div class="collapsible-content" id="platform-details">
@@ -1429,7 +1431,7 @@ window.onerror = function(msg, url, lineNo, columnNo, error) {
                     <div class="graph-text-content">
                         <span class="mono" style="color: var(--color-cyan-500); text-transform: uppercase; font-weight: 600; font-size: 0.8rem; letter-spacing: 0.05em;">Persistent Context System</span>
                         <h2 style="margin-top: 0.5rem; color: var(--color-white);">Second Brain preserves the memory of agent work.</h2>
-                        <p style="color: rgba(255, 255, 255, 0.75);">Agent operations need memory beyond a single chat. Second Brain is the NSAM layer for preserving knowledge, agent interactions, evidence, lineage, and learning signals so teams can inspect how work evolved over time.</p>
+                        <p style="color: rgba(255, 255, 255, 0.75);">Preserves knowledge integration, lineage networks, and audit evidence across runs.</p>
                         
                         <p style="font-size: 0.9rem; color: rgba(255, 255, 255, 0.65); margin-top: 1.5rem;"><strong>How to interact:</strong> Click on any node in the interactive graph diagram to query its metadata and inspect real validation evidence loaded from the Neo4j database.</p>
                         
@@ -1515,7 +1517,7 @@ window.onerror = function(msg, url, lineNo, columnNo, error) {
                     <div class="docket-info">
                         <span class="mono" style="color: var(--color-cyan-500); text-transform: uppercase; font-weight: 600; font-size: 0.8rem; letter-spacing: 0.05em;">Auditable Work Packages</span>
                         <h2 style="margin-top: 0.5rem;">Dockets make agent work reviewable.</h2>
-                        <p>A Docket is the governed work record for agent operations. It captures the request, scope, assumptions, plan, approval state, sandbox proof, evidence, risks, and release status so teams can understand what happened and what remains open.</p>
+                        <p>Cryptographically sealed record capturing scopes, approvals, execution proofs, and metadata.</p>
                         
                         <p style="font-size: 0.9rem; margin-top: 1.5rem; margin-bottom: 1rem;"><strong>Select an operational template to view its live Docket:</strong></p>
                         <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2rem;">
@@ -1584,7 +1586,7 @@ window.onerror = function(msg, url, lineNo, columnNo, error) {
                 <div class="section-header">
                     <span class="mono" style="color: var(--color-cyan-500); text-transform: uppercase; font-weight: 600; font-size: 0.8rem; letter-spacing: 0.05em;">Model Independence</span>
                     <h2 style="margin-top: 0.5rem;">Model choice should be governed, not improvised.</h2>
-                    <p>Enterprise agent quality depends on matching the task to the right model, cost profile, safety boundary, and evaluation standard. NSAM separates agent capability from a single model provider by planning for governed model routing, evaluation, and provider lanes.</p>
+                    <p>Dynamically routing execution tasks to governed model lanes based on performance, cost, and safety boundaries.</p>
                 </div>
                 
                 <div class="collapsible-content" id="model-choice-details">

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OrcasAgent&trade; | ADLC Lifecycle Workbench</title>
+    <meta name="description" content="ADLC Lifecycle Workbench governed by OrcasAgent&trade;">
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Brand",
+      "name": "OrcasAgent",
+      "logo": "https://orcasagent.ai/logo/orcas-cute.svg",
+      "slogan": "Governed enterprise agent operations from intent to outcome.",
+      "brand": {
+        "@type": "Brand",
+        "name": "OrcasAgent"
+      },
+      "award": "Trademark claimed by Karunanidhi Mishra",
+      "proprietaryName": "OrcasAgent",
+      "owner": {
+        "@type": "Person",
+        "name": "Karunanidhi Mishra",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "1713 Pelha Dr",
+          "addressLocality": "Aubrey",
+          "addressRegion": "TX",
+          "postalCode": "76227",
+          "addressCountry": "US"
+        }
+      }
+    }
+    </script>
+    <!-- Preconnect for Performance Optimization -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Style Sheets -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dashboard.css">
+    
+    <!-- FontAwesome Icons for Dashboard Navigation -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="dashboard-body theme-cyberpunk">
+    
+    <!-- Dashboard Layout Grid -->
+    <div class="dashboard-layout">
+        
+        <!-- Sidebar overlay for mobile dismissal -->
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+        
+        <!-- Global Sidebar (Left) -->
+        <nav class="dashboard-sidebar" id="dashboard-sidebar">
+            <div class="sidebar-brand">
+                <i class="fa-solid fa-water animate-pulse"></i>
+                <span>OrcasAgent&trade;</span>
+            </div>
+            
+            <div class="sidebar-context-label" style="padding: 0 1.5rem; font-size: 0.65rem; color: #6b7280; font-family: var(--font-mono); letter-spacing: 0.05em; margin-bottom: 1rem; text-transform: uppercase;">WORKBENCH MODE</div>
+
+            <ul class="sidebar-nav">
+                <li class="nav-item active" data-tab="adlc">
+                    <i class="fa-solid fa-arrows-spin animate-spin-slow"></i>
+                    <span>ADLC Simulator</span>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <div class="theme-selector-label">SYSTEM CORES</div>
+                <div class="theme-selector">
+                    <button class="theme-btn active" data-theme="theme-cyberpunk" title="Cyberpunk"><span style="background: #D112BA"></span></button>
+                    <button class="theme-btn" data-theme="theme-azure" title="Azure"><span style="background: #12B8D7"></span></button>
+                    <button class="theme-btn" data-theme="theme-emerald" title="Emerald"><span style="background: #16A37B"></span></button>
+                    <button class="theme-btn" data-theme="theme-twilight" title="Twilight"><span style="background: #9B5DE5"></span></button>
+                </div>
+                <a href="index.html" class="btn-return" style="margin-bottom: 0.5rem;"><i class="fa-solid fa-arrow-left"></i> Main Site</a>
+                <a href="dashboard.html" class="btn-return" style="margin-bottom: 0.5rem; background: rgba(18, 184, 215, 0.1); border-color: rgba(18, 184, 215, 0.3); color: var(--color-cyan-500) !important;"><i class="fa-solid fa-chart-line"></i> Operations Dashboard</a>
+                <div style="font-size: 0.6rem; color: #6b7280; text-align: center; margin-top: 0.5rem; line-height: 1.3;">
+                    OrcasAgent™ and the Orcas mascot logo are trademarks of Karunanidhi Mishra. All rights reserved.
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="dashboard-main">
+            
+            <!-- Telemetry Header -->
+            <header class="dashboard-header">
+                <div class="header-left-group">
+                    <!-- Hamburger toggle button for mobile/tablet drawer -->
+                    <button class="sidebar-toggle" id="sidebar-toggle-btn" aria-label="Toggle Navigation Menu">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    
+                    <div class="header-title">
+                        <h1 id="active-tab-title">ADLC workbench</h1>
+                        <p id="active-tab-desc">Controlled multi-cloud Agentic Development Life Cycle</p>
+                    </div>
+                </div>
+                
+                <div class="telemetry-ticker">
+                    <div class="ticker-item">
+                        <span class="ticker-label">ORCAS STATUS</span>
+                        <span class="ticker-value text-glow-cyan" id="orcas-status-indicator"><i class="fa-solid fa-circle-check animate-pulse"></i> OPERATIONAL</span>
+                    </div>
+                    <div class="ticker-item hide-on-mobile">
+                        <span class="ticker-label">ACTIVE INTEGRATIONS</span>
+                        <span class="ticker-value">GCP / Azure / AWS / Solace</span>
+                    </div>
+                    <div class="ticker-item">
+                        <span class="ticker-label">RELEASES (24H)</span>
+                        <span class="ticker-value text-green" style="color: var(--color-green-500);">14 SECURED</span>
+                    </div>
+                </div>
+                
+                <div class="header-profile">
+                    <div class="profile-avatar">SRE</div>
+                </div>
+            </header>
+
+            <!-- Tab Contents Container -->
+            <div class="dashboard-content-wrapper">
+                
+                <!-- Main Simulator Section -->
+                <section id="tab-adlc" class="tab-pane active">
+                    <div class="adlc-layout">
+                        
+                        <!-- Top: The Pipeline Progress Tracker -->
+                        <div class="widget card-glass adlc-pipeline-widget" style="margin-bottom: 24px;">
+                            <div class="widget-header">
+                                <h3><i class="fa-solid fa-arrows-spin"></i> Interactive ADLC Pipeline Visualizer</h3>
+                                <span class="badge">Governance overlay</span>
+                            </div>
+                            <div class="widget-body">
+                                <div class="adlc-pipeline-visualizer">
+                                    <div class="pipeline-step active" data-step="1">
+                                        <div class="step-num-circle">1</div>
+                                        <span class="step-title-text">Design & Intent</span>
+                                    </div>
+                                    <div class="pipeline-connector-line"></div>
+                                    <div class="pipeline-step" data-step="2">
+                                        <div class="step-num-circle">2</div>
+                                        <span class="step-title-text">Docket Packaging</span>
+                                    </div>
+                                    <div class="pipeline-connector-line"></div>
+                                    <div class="pipeline-step" data-step="3">
+                                        <div class="step-num-circle">3</div>
+                                        <span class="step-title-text">Sandbox Eval</span>
+                                    </div>
+                                    <div class="pipeline-connector-line"></div>
+                                    <div class="pipeline-step" data-step="4">
+                                        <div class="step-num-circle">4</div>
+                                        <span class="step-title-text">CISO Sign-off</span>
+                                    </div>
+                                    <div class="pipeline-connector-line"></div>
+                                    <div class="pipeline-step" data-step="5">
+                                        <div class="step-num-circle">5</div>
+                                        <span class="step-title-text">Multi-Cloud Deploy</span>
+                                    </div>
+                                    <div class="pipeline-connector-line"></div>
+                                    <div class="pipeline-step" data-step="6">
+                                        <div class="step-num-circle">6</div>
+                                        <span class="step-title-text">Mesh Ingestion</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bottom: Interactive Panel Workspace -->
+                        <div class="adlc-workspace-panel widget card-glass">
+                            <div class="widget-header" style="border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 12px; margin-bottom: 16px;">
+                                <div class="workspace-panel-title-group">
+                                    <span class="badge text-glow-cyan" id="adlc-workspace-badge">STAGE 1 ACTIVE</span>
+                                    <h3 id="adlc-workspace-title"><i class="fa-solid fa-wand-magic-sparkles"></i> Intent Analysis & Requirement Decomposition</h3>
+                                </div>
+                                <span class="badge" id="adlc-stage-status-indicator">STANDBY</span>
+                            </div>
+                            
+                            <div class="widget-body adlc-workspace-content-body">
+                                
+                                <!-- Step 1 Panel -->
+                                <div class="adlc-step-panel" id="adlc-panel-1">
+                                    <div class="adlc-panel-grid">
+                                        <div class="panel-left">
+                                            <p class="panel-instructions">
+                                                Select an enterprise Business Requirement Document (BRD) template to decompose. The Orchestrator will extract intent, model constraints, and draft the core `.docket.json` envelope.
+                                            </p>
+                                            <div class="brd-template-selector">
+                                                <button class="brd-btn active" data-brd="telco">
+                                                    <i class="fa-solid fa-phone-volume"></i>
+                                                    <div>
+                                                        <span class="brd-name">TelcoQuoteReadinessAgent</span>
+                                                        <span class="brd-desc">Simulated billing lookup and quote approvals</span>
+                                                    </div>
+                                                </button>
+                                                <button class="brd-btn" data-brd="finance">
+                                                    <i class="fa-solid fa-chart-line"></i>
+                                                    <div>
+                                                        <span class="brd-name">FinCreditSanctionsAgent</span>
+                                                        <span class="brd-desc">Automated credit scoring and KYC audits</span>
+                                                    </div>
+                                                </button>
+                                                <button class="brd-btn" data-brd="healthcare">
+                                                    <i class="fa-solid fa-heart-pulse"></i>
+                                                    <div>
+                                                        <span class="brd-name">HealthCarePlanValidator</span>
+                                                        <span class="brd-desc">Patient data masking and policy matching</span>
+                                                    </div>
+                                                </button>
+                                            </div>
+                                            <button class="btn-primary adlc-action-btn" id="btn-adlc-analyze">
+                                                <i class="fa-solid fa-gears animate-spin-slow"></i> Analyze Requirements
+                                            </button>
+                                        </div>
+                                        <div class="panel-right">
+                                            <span class="console-label">ORCHESTRATOR COMPILER CONSOLE</span>
+                                            <div class="adlc-console" id="adlc-console-1">
+                                                <span class="line text-muted">[SYSTEM] Ready for requirements analysis.</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Step 2 Panel -->
+                                <div class="adlc-step-panel hidden" id="adlc-panel-2">
+                                    <div class="adlc-panel-grid">
+                                        <div class="panel-left">
+                                            <p class="panel-instructions">
+                                                Inspect the generated declarative **`.docket.json`** manifest. This manifest defines strict runtime constraints, authorized LLMs, and least-privilege capability tools.
+                                            </p>
+                                            <div class="docket-structure-viewer">
+                                                <div class="docket-field-item" title="Unique contract identifier">
+                                                    <span class="f-key">"docket_id":</span>
+                                                    <span class="f-val text-glow-cyan" id="docket-id-val">"DCK-TELCO-7105"</span>
+                                                </div>
+                                                <div class="docket-field-item" title="Assigned secure execution account">
+                                                    <span class="f-key">"workload_identity":</span>
+                                                    <span class="f-val" id="docket-sa-val">"sa-telco-readiness@nsam-prod.iam"</span>
+                                                </div>
+                                                <div class="docket-field-item" title="Immutable boundary definitions">
+                                                    <span class="f-key">"least_privilege_tools":</span>
+                                                    <span class="f-val" id="docket-tools-val">["sim_billing_lookup", "check_catalog_inventory"]</span>
+                                                </div>
+                                                <div class="docket-field-item" title="Model binding parameters">
+                                                    <span class="f-key">"authorized_llm":</span>
+                                                    <span class="f-val" id="docket-llm-val">"gemini-2.5-flash@enterprise"</span>
+                                                </div>
+                                                <div class="docket-field-item" title="Budget constraints">
+                                                    <span class="f-key">"token_budget_limit":</span>
+                                                    <span class="f-val">500000 / hour</span>
+                                                </div>
+                                            </div>
+                                            <div class="docket-security-badge" style="margin-top: 16px;">
+                                                <i class="fa-solid fa-lock text-glow-cyan"></i>
+                                                <span>Boundary locked. Awaiting sandbox verification evidence.</span>
+                                            </div>
+                                            <button class="btn-primary adlc-action-btn" id="btn-adlc-goto-sandbox" style="margin-top: 16px;">
+                                                <i class="fa-solid fa-arrow-right"></i> Proceed to Sandbox
+                                            </button>
+                                        </div>
+                                        <div class="panel-right">
+                                            <span class="console-label">RAW DOCKET PARSER</span>
+                                            <div class="adlc-console code-syntax" id="adlc-docket-code-view">
+                                                <!-- Hydrated dynamically -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Step 3 Panel -->
+                                <div class="adlc-step-panel hidden" id="adlc-panel-3">
+                                    <div class="adlc-panel-grid">
+                                        <div class="panel-left">
+                                            <p class="panel-instructions">
+                                                Spin up the agent container inside a hermetically sealed, resource-bounded **Docker/gVisor sandbox**. Execute automated safety rubrics and regression smoke testing.
+                                            </p>
+                                            <div class="eval-metrics-group">
+                                                <div class="eval-progress-bar-wrapper">
+                                                    <span class="eval-progress-label">SAFETY & PROMPT INJECTION SHIELD</span>
+                                                    <div class="eval-track"><div class="eval-fill" id="eval-fill-safety" style="width: 0%;"></div></div>
+                                                </div>
+                                                <div class="eval-progress-bar-wrapper">
+                                                    <span class="eval-progress-label">FUNCTIONAL SMOKE LOOPS</span>
+                                                    <div class="eval-track"><div class="eval-fill" id="eval-fill-smoke" style="width: 0%;"></div></div>
+                                                </div>
+                                                <div class="eval-progress-bar-wrapper">
+                                                    <span class="eval-progress-label">LATENCY & PERFORMANCE COMPLIANCE</span>
+                                                    <div class="eval-track"><div class="eval-fill" id="eval-fill-latency" style="width: 0%;"></div></div>
+                                                </div>
+                                            </div>
+                                            <button class="btn-primary adlc-action-btn" id="btn-adlc-eval">
+                                                <i class="fa-solid fa-vial"></i> Launch Sandbox & Evals
+                                            </button>
+                                        </div>
+                                        <div class="panel-right">
+                                            <span class="console-label">SANDBOX EVALUATION TERMINAL LOGS</span>
+                                            <div class="adlc-console" id="adlc-console-3">
+                                                <span class="line text-muted">[SYSTEM] Sandbox idle. Awaiting test initiation.</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Step 4 Panel -->
+                                <div class="adlc-step-panel hidden" id="adlc-panel-4">
+                                    <div class="adlc-panel-grid">
+                                        <div class="panel-left">
+                                            <p class="panel-instructions">
+                                                Promote validated Sandbox Evidence to the **CISO Audit Desk**. Sign with your private key to cryptographically seal the `.docket.json` and generate the deployment wrapper.
+                                            </p>
+                                            <div class="signature-pad-container">
+                                                <div class="sig-header-row">
+                                                    <span>ECDSA SHA-256 SIGNATURE PAD</span>
+                                                    <span class="badge text-glow-cyan">AUTHORIZED IDENTITY</span>
+                                                </div>
+                                                <input type="text" class="sig-input" id="adlc-signature-name" placeholder="Type name (e.g. Karunanidhi Mishra) to sign">
+                                                <div class="sig-canvas-mock">
+                                                    <div id="sig-wave-animation" class="wave-lines"></div>
+                                                    <span class="sig-placeholder-text" id="sig-placeholder">Awaiting signature...</span>
+                                                    <div class="sig-stamp hidden" id="sig-stamp-seal">
+                                                        <i class="fa-solid fa-shield-check"></i> SEALS APPROVED
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button class="btn-primary adlc-action-btn" id="btn-adlc-sign" disabled>
+                                                <i class="fa-solid fa-signature"></i> CISO Authorize & Seal
+                                            </button>
+                                        </div>
+                                        <div class="panel-right">
+                                            <span class="console-label">LEDGER AUDIT LOGS</span>
+                                            <div class="adlc-console" id="adlc-console-4">
+                                                <span class="line text-muted">[SYSTEM] Awaiting signature. Audit trail initialized.</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Step 5 Panel -->
+                                <div class="adlc-step-panel hidden" id="adlc-panel-5">
+                                    <div class="adlc-panel-grid">
+                                        <div class="panel-left">
+                                            <p class="panel-instructions">
+                                                Consume your existing enterprise Infrastructure-as-Code (IaC) and cloud setups. Select your target cloud provider to compile pre-approved Terraform variables or Helm value charts.
+                                            </p>
+                                            <div class="cloud-provider-grid">
+                                                <button class="cloud-btn active" data-cloud="gcp">
+                                                    <i class="fa-brands fa-google"></i>
+                                                    <span>Google Cloud (GKE)</span>
+                                                </button>
+                                                <button class="cloud-btn" data-cloud="azure">
+                                                    <i class="fa-brands fa-microsoft" style="color: #00A4EF"></i>
+                                                    <span>Azure (AKS)</span>
+                                                </button>
+                                                <button class="cloud-btn" data-cloud="aws">
+                                                    <i class="fa-brands fa-aws" style="color: #FF9900"></i>
+                                                    <span>AWS (EKS Fargate)</span>
+                                                </button>
+                                                <button class="cloud-btn" data-cloud="hybrid">
+                                                    <i class="fa-solid fa-network-wired"></i>
+                                                    <span>Hybrid (Rancher)</span>
+                                                </button>
+                                            </div>
+                                            <div class="cloud-integration-notes" id="cloud-integration-summary">
+                                                <!-- Populated dynamically -->
+                                            </div>
+                                            <button class="btn-primary adlc-action-btn" id="btn-adlc-deploy">
+                                                <i class="fa-solid fa-cloud-arrow-up"></i> Generate IaC & Promote
+                                            </button>
+                                        </div>
+                                        <div class="panel-right">
+                                            <span class="console-label" id="iac-viewer-label">GENERATED IaC METADATA (agent.tfvars.json)</span>
+                                            <div class="adlc-console code-syntax" id="adlc-iac-code-view">
+                                                <!-- Hydrated dynamically -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Step 6 Panel -->
+                                <div class="adlc-step-panel hidden" id="adlc-panel-6">
+                                    <div class="adlc-panel-grid" style="grid-template-columns: 1fr;">
+                                        <div class="mesh-sync-wrapper">
+                                            <div class="mesh-sync-radar">
+                                                <div class="radar-ping"></div>
+                                                <div class="radar-ring"></div>
+                                                <div class="radar-ring delay-1"></div>
+                                                <div class="radar-ring delay-2"></div>
+                                                <i class="fa-solid fa-arrows-spin radar-icon animate-spin-slow"></i>
+                                            </div>
+                                            <h4 class="mesh-sync-title">Attestation & Mesh Synchronization Active</h4>
+                                            <p class="panel-instructions" style="text-align: center; max-width: 450px; margin: 12px auto 0;">
+                                                Your agent is emitting active cryptographic heartbeats. The NSAM Event Broker (Solace) has validated the signature, registered the capability cards in `webui_gateway.db`, and synchronized the live Mesh Window Topology!
+                                            </p>
+                                        </div>
+                                        <div class="widget-body" style="padding: 0; margin-top: 24px;">
+                                            <span class="console-label">SOLACE EVENT BROKER REGISTRY LOGS</span>
+                                            <div class="adlc-console" id="adlc-console-6" style="max-height: 180px;">
+                                                <span class="line text-muted">[SYSTEM] Listening on topic: "nsam/deployment/registry"</span>
+                                            </div>
+                                        </div>
+                                        <button class="btn-primary adlc-action-btn" id="btn-adlc-complete" style="margin: 24px auto 0; max-width: 250px;">
+                                            <i class="fa-solid fa-circle-check"></i> Complete ADLC Release
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+            </div>
+        </main>
+        
+        <!-- SRE Orca Guidance Companion -->
+        <div id="orca-companion" class="sre-companion">
+            <div class="companion-bubble hidden" id="companion-bubble">
+                <div class="bubble-header">
+                    <span class="bubble-title"><i class="fa-solid fa-robot"></i> OrcasAgent&trade; SRE Insight</span>
+                    <button class="bubble-close" id="btn-companion-close"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="bubble-content" id="companion-text">
+                    Monitoring system telemetry. All core sqlite databases mapped. Click me to cycle through AI-intrinsic insights.
+                </div>
+            </div>
+            <div class="companion-avatar" id="companion-avatar" title="OrcasAgent™ SRE Companion">
+                <!-- Inline SVG Orca -->
+                <svg viewBox="0 0 100 100" class="orca-svg" width="60" height="60">
+                    <path d="M10,50 Q30,20 50,50 T90,50" fill="none" stroke="currentColor" stroke-width="4" />
+                    <circle cx="25" cy="40" r="4" fill="currentColor" />
+                    <!-- Orcas Fin details -->
+                    <path d="M48,35 Q60,15 65,30 Z" fill="currentColor" />
+                    <!-- Water Blowhole spray -->
+                    <path d="M25,30 Q25,10 20,8 M25,30 Q28,10 32,12" fill="none" stroke="var(--glow-cyan, #12B8D7)" stroke-width="2" class="spray-path" />
+                </svg>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Standalone ADLC Scripts -->
+    <script src="adlc.js"></script>
+</body>
+</html>
