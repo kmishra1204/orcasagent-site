@@ -2324,3 +2324,728 @@ body.dashboard-body {
         height: 420px;
     }
 }
+
+/* ==========================================================================
+   Tab 8: ADLC Lifecycle Components (Interactive Multi-Cloud Pipeline)
+   ========================================================================== */
+.adlc-layout {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - var(--header-height) - var(--content-padding) * 2 - 10px);
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+/* Custom Scrollbar for ADLC Layout */
+.adlc-layout::-webkit-scrollbar {
+    width: 6px;
+}
+.adlc-layout::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+}
+.adlc-layout::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+}
+.adlc-layout::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.adlc-pipeline-widget {
+    background: rgba(255, 255, 255, 0.015);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.adlc-pipeline-visualizer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    width: 100%;
+}
+
+.pipeline-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    cursor: pointer;
+    z-index: 2;
+    transition: var(--transition-premium);
+}
+
+.step-num-circle {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition: all var(--transition-premium);
+    box-shadow: 0 0 0 rgba(var(--color-primary-rgb), 0);
+}
+
+.step-title-text {
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.4);
+    transition: all var(--transition-premium);
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* Connection Line */
+.pipeline-connector-line {
+    flex: 1;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.08);
+    margin: 0 12px;
+    margin-bottom: 24px; /* Align with circles */
+    position: relative;
+    overflow: hidden;
+    transition: background var(--transition-premium);
+}
+
+.pipeline-connector-line::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
+    animation: flowLine 2s infinite linear;
+    opacity: 0;
+}
+
+@keyframes flowLine {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+/* Step Active State */
+.pipeline-step.active .step-num-circle {
+    border-color: var(--color-primary);
+    background: rgba(var(--color-primary-rgb), 0.15);
+    color: var(--color-primary);
+    box-shadow: 0 0 15px var(--color-glow);
+    transform: scale(1.15);
+}
+
+.pipeline-step.active .step-title-text {
+    color: var(--color-primary);
+    font-weight: 600;
+    text-shadow: 0 0 8px var(--color-glow);
+}
+
+/* Step Completed State */
+.pipeline-step.completed .step-num-circle {
+    border-color: var(--color-secondary);
+    background: rgba(var(--color-secondary-rgb), 0.1);
+    color: var(--color-secondary);
+    box-shadow: 0 0 10px rgba(var(--color-secondary-rgb), 0.2);
+}
+
+.pipeline-step.completed .step-title-text {
+    color: var(--color-secondary);
+}
+
+.pipeline-connector-line.active {
+    background: var(--color-primary);
+}
+
+.pipeline-connector-line.active::after {
+    opacity: 1;
+}
+
+.pipeline-connector-line.completed {
+    background: var(--color-secondary);
+}
+
+/* Workspace panel */
+.adlc-workspace-panel {
+    background: rgba(255, 255, 255, 0.015);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.workspace-panel-title-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.adlc-step-panel {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    animation: fadeInSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeInSlide {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.adlc-step-panel.hidden {
+    display: none !important;
+}
+
+.adlc-panel-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    height: 100%;
+}
+
+.panel-left {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.panel-right {
+    display: flex;
+    flex-direction: column;
+}
+
+.panel-instructions {
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* BRD Selector Button styles */
+.brd-template-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.brd-btn {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-align: left;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.brd-btn i {
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.4);
+    transition: color var(--transition-fast);
+}
+
+.brd-btn div {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.brd-name {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.brd-desc {
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.45);
+}
+
+.brd-btn:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.brd-btn.active {
+    background: rgba(var(--color-primary-rgb), 0.08);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 10px var(--color-glow);
+}
+
+.brd-btn.active i {
+    color: var(--color-primary);
+}
+
+/* Action button with custom spinning loading state */
+.adlc-action-btn {
+    padding: 12px 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: fit-content;
+    cursor: pointer;
+    margin-top: auto;
+}
+
+.adlc-action-btn i.animate-spin-slow {
+    animation: fa-spin 3s infinite linear;
+}
+
+/* Console & Terminals */
+.console-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+}
+
+.adlc-console {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 8px;
+    padding: 16px;
+    font-family: 'Fira Code', 'Courier New', monospace;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.85);
+    overflow-y: auto;
+    flex: 1;
+    min-height: 250px;
+    max-height: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Console customized lines */
+.adlc-console .line {
+    display: block;
+}
+
+.adlc-console .line.success {
+    color: #10B981;
+}
+
+.adlc-console .line.warning {
+    color: #F59E0B;
+}
+
+.adlc-console .line.error {
+    color: #EF4444;
+}
+
+.adlc-console .line.highlight {
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+.adlc-console .line.system {
+    color: #3B82F6;
+}
+
+/* Typing blinking cursor simulation */
+.adlc-console .typing::after {
+    content: '█';
+    animation: blinkCursor 0.8s infinite;
+    color: var(--color-primary);
+    margin-left: 2px;
+}
+
+@keyframes blinkCursor {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+}
+
+/* Code Syntax view */
+.adlc-console.code-syntax {
+    background: rgba(5, 5, 10, 0.6);
+    color: #A9B1D6;
+}
+
+/* Step 2 Docket View styles */
+.docket-structure-viewer {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.docket-field-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.docket-field-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.docket-field-item .f-key {
+    font-family: monospace;
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.docket-field-item .f-val {
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.docket-field-item .text-glow-cyan {
+    color: var(--color-primary);
+    text-shadow: 0 0 8px var(--color-glow);
+}
+
+.docket-security-badge {
+    background: rgba(var(--color-primary-rgb), 0.05);
+    border: 1px solid rgba(var(--color-primary-rgb), 0.15);
+    padding: 10px 14px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+/* Step 3: Eval metrics & Progress tracks */
+.eval-metrics-group {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 8px;
+}
+
+.eval-progress-bar-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.eval-progress-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 0.05em;
+}
+
+.eval-track {
+    height: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+}
+
+.eval-fill {
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+    border-radius: 4px;
+    transition: width 0.3s ease;
+    box-shadow: 0 0 10px var(--color-glow);
+}
+
+/* Step 4: CISO Signature Pad styles */
+.signature-pad-container {
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.sig-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.05em;
+}
+
+.sig-input {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    padding: 10px 14px;
+    color: #FFF;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    transition: all var(--transition-fast);
+}
+
+.sig-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 8px var(--color-glow);
+}
+
+.sig-canvas-mock {
+    height: 120px;
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.sig-placeholder-text {
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.3);
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* Animated asymmetric sig wave */
+.wave-lines {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    transform: translateY(-50%);
+    opacity: 0.15;
+    pointer-events: none;
+    background-image: repeating-linear-gradient(90deg, transparent, transparent 15px, var(--color-primary) 15px, var(--color-primary) 17px);
+    transition: all 0.3s ease;
+}
+
+.wave-lines.active {
+    opacity: 0.6;
+    animation: waveScroll 2s infinite linear;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,30 C150,110 350,0 500,70 C650,140 850,10 1000,80 C1150,150 1300,50 1400,60 L1400,120 L0,120 Z' fill='%23D112BA' opacity='0.4'%3E%3C/path%3E%3C/svg%3E");
+    background-size: 600px 100%;
+}
+
+body.theme-azure .wave-lines.active {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,30 C150,110 350,0 500,70 C650,140 850,10 1000,80 C1150,150 1300,50 1400,60 L1400,120 L0,120 Z' fill='%2312B8D7' opacity='0.4'%3E%3C/path%3E%3C/svg%3E");
+}
+body.theme-emerald .wave-lines.active {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,30 C150,110 350,0 500,70 C650,140 850,10 1000,80 C1150,150 1300,50 1400,60 L1400,120 L0,120 Z' fill='%2316A37B' opacity='0.4'%3E%3C/path%3E%3C/svg%3E");
+}
+body.theme-twilight .wave-lines.active {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,30 C150,110 350,0 500,70 C650,140 850,10 1000,80 C1150,150 1300,50 1400,60 L1400,120 L0,120 Z' fill='%239B5DE5' opacity='0.4'%3E%3C/path%3E%3C/svg%3E");
+}
+
+@keyframes waveScroll {
+    0% { background-position-x: 0px; }
+    100% { background-position-x: 600px; }
+}
+
+.sig-stamp {
+    position: absolute;
+    padding: 10px 16px;
+    border: 3px solid #10B981;
+    color: #10B981;
+    border-radius: 8px;
+    font-weight: 800;
+    font-size: 1.1rem;
+    letter-spacing: 0.1em;
+    transform: rotate(-12deg) scale(1.5);
+    opacity: 0;
+    background: rgba(0, 0, 0, 0.85);
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+    pointer-events: none;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sig-stamp.sealed {
+    animation: stampApprove 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes stampApprove {
+    0% {
+        transform: rotate(-30deg) scale(2);
+        opacity: 0;
+    }
+    100% {
+        transform: rotate(-12deg) scale(1);
+        opacity: 1;
+    }
+}
+
+/* Step 5: Multi-Cloud grid & Selectors */
+.cloud-provider-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.cloud-btn {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+    transition: all var(--transition-fast);
+}
+
+.cloud-btn i {
+    font-size: 1.15rem;
+    width: 20px;
+    text-align: center;
+}
+
+.cloud-btn:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.cloud-btn.active {
+    background: rgba(var(--color-primary-rgb), 0.08);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 8px var(--color-glow);
+    color: #FFF;
+}
+
+.cloud-integration-notes {
+    background: rgba(255, 255, 255, 0.02);
+    border-left: 3px solid var(--color-primary);
+    border-radius: 0 6px 6px 0;
+    padding: 12px;
+    font-size: 0.78rem;
+    line-height: 1.4;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+/* Step 6: Radar synchronize pulse visualizer */
+.mesh-sync-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 20px;
+    position: relative;
+}
+
+.mesh-sync-radar {
+    width: 80px;
+    height: 80px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.radar-ping {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    box-shadow: 0 0 15px var(--color-glow);
+    z-index: 5;
+}
+
+.radar-ring {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid var(--color-primary);
+    opacity: 0;
+    transform: scale(0.1);
+    animation: radarRipple 3s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
+    box-shadow: inset 0 0 10px var(--color-glow);
+}
+
+.radar-ring.delay-1 {
+    animation-delay: 1s;
+}
+
+.radar-ring.delay-2 {
+    animation-delay: 2s;
+}
+
+@keyframes radarRipple {
+    0% {
+        transform: scale(0.1);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(2.2);
+        opacity: 0;
+    }
+}
+
+.radar-icon {
+    font-size: 2rem;
+    color: var(--color-primary);
+    position: absolute;
+    z-index: 6;
+    opacity: 0.9;
+    text-shadow: 0 0 12px var(--color-glow);
+}
+
+.mesh-sync-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #FFF;
+    text-align: center;
+    text-shadow: 0 0 10px var(--color-glow);
+}
+
+/* Custom JSON syntax coloring */
+.code-syntax .syn-key { color: #F7768E; }    /* Pink/Red for keys */
+.code-syntax .syn-str { color: #9ECE6A; }    /* Green for strings */
+.code-syntax .syn-num { color: #FF9E64; }    /* Orange for numbers */
+.code-syntax .syn-bool { color: #BB9AF3; }   /* Purple for booleans */
+.code-syntax .syn-val { color: #73DACA; }    /* Cyan for raw values */
+.code-syntax .syn-comment { color: #565F89; font-style: italic; } /* Muted comments */
+
+@media (max-width: 1024px) {
+    .adlc-panel-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .adlc-action-btn {
+        margin-top: 16px;
+    }
+    
+    .adlc-console {
+        min-height: 200px;
+    }
+}
+
