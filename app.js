@@ -53,6 +53,8 @@ function initAuraThemeSelector() {
             '--color-ink-950': '#041026',
             '--glow-cyan': 'rgba(18, 184, 215, 0.4)'
         }
+    };
+
     // Set initial theme based on saved theme or active button
     let savedTheme = localStorage.getItem('orcas-theme') || 'azure';
     if (!themes[savedTheme]) savedTheme = 'azure';
