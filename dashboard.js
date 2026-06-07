@@ -110,11 +110,34 @@ function initThemeEngine() {
     const themeBtns = document.querySelectorAll('.theme-btn');
     const body = document.body;
 
+    // Load initial theme from localStorage or default to azure
+    let savedTheme = localStorage.getItem('orcas-theme') || 'azure';
+    savedTheme = savedTheme.replace('theme-', '');
+    const initialPrefixedTheme = `theme-${savedTheme}`;
+
+    // Apply saved theme class to body on startup
+    body.classList.remove('theme-cyberpunk', 'theme-azure', 'theme-emerald', 'theme-twilight');
+    body.classList.add(initialPrefixedTheme);
+
+    // Set button active status
+    themeBtns.forEach(btn => {
+        const btnTheme = btn.getAttribute('data-theme');
+        if (btnTheme === initialPrefixedTheme) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+
+    // Set initial glow color state
+    activeGlowColor = themeGlowMap[initialPrefixedTheme] || '#12B8D7';
+    document.documentElement.style.setProperty('--color-primary', activeGlowColor);
+
     themeBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-            const selectedTheme = btn.getAttribute('data-theme');
+            const selectedTheme = btn.getAttribute('data-theme'); // e.g. "theme-cyberpunk"
             
-            // Reset theme classes
+            // Reset theme classes on body
             body.classList.remove('theme-cyberpunk', 'theme-azure', 'theme-emerald', 'theme-twilight');
             body.classList.add(selectedTheme);
 
@@ -122,8 +145,12 @@ function initThemeEngine() {
             btn.classList.add('active');
 
             // Align active JS accent color
-            activeGlowColor = themeGlowMap[selectedTheme] || '#D112BA';
+            activeGlowColor = themeGlowMap[selectedTheme] || '#12B8D7';
             document.documentElement.style.setProperty('--color-primary', activeGlowColor);
+
+            // Save clean theme name without prefix to match index.html
+            const cleanTheme = selectedTheme.replace('theme-', '');
+            localStorage.setItem('orcas-theme', cleanTheme);
 
             // Re-render any active visuals
             window.dispatchEvent(new Event('themeChanged'));

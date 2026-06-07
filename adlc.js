@@ -92,11 +92,34 @@ function initThemeEngine() {
     const themeBtns = document.querySelectorAll('.theme-btn');
     const body = document.body;
 
+    // Load initial theme from localStorage or default to azure
+    let savedTheme = localStorage.getItem('orcas-theme') || 'azure';
+    savedTheme = savedTheme.replace('theme-', '');
+    const initialPrefixedTheme = `theme-${savedTheme}`;
+
+    // Apply saved theme class to body on startup
+    body.classList.remove('theme-cyberpunk', 'theme-azure', 'theme-emerald', 'theme-twilight');
+    body.classList.add(initialPrefixedTheme);
+
+    // Set button active status
+    themeBtns.forEach(btn => {
+        const btnTheme = btn.getAttribute('data-theme');
+        if (btnTheme === initialPrefixedTheme) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+
+    // Set initial glow color state
+    activeGlowColor = themeGlowMap[initialPrefixedTheme] || '#12B8D7';
+    document.documentElement.style.setProperty('--color-primary', activeGlowColor);
+
     themeBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-            const selectedTheme = btn.getAttribute('data-theme');
+            const selectedTheme = btn.getAttribute('data-theme'); // e.g. "theme-cyberpunk"
             
-            // Reset theme classes
+            // Reset theme classes on body
             body.classList.remove('theme-cyberpunk', 'theme-azure', 'theme-emerald', 'theme-twilight');
             body.classList.add(selectedTheme);
 
@@ -104,8 +127,12 @@ function initThemeEngine() {
             btn.classList.add('active');
 
             // Align active JS accent color
-            activeGlowColor = themeGlowMap[selectedTheme] || '#D112BA';
+            activeGlowColor = themeGlowMap[selectedTheme] || '#12B8D7';
             document.documentElement.style.setProperty('--color-primary', activeGlowColor);
+
+            // Save clean theme name without prefix to match index.html
+            const cleanTheme = selectedTheme.replace('theme-', '');
+            localStorage.setItem('orcas-theme', cleanTheme);
 
             // Re-render any active visuals
             window.dispatchEvent(new Event('themeChanged'));
@@ -218,6 +245,8 @@ function initADLCLifecycle() {
     let selectedBrd = 'telco';
     let selectedCloud = 'gcp';
     let currentTypingInterval = null;
+    let metricInterval = null;
+    let tickerInterval = null;
 
     // BRD Template Data
     const brdData = {
@@ -249,6 +278,9 @@ function initADLCLifecycle() {
             capabilities: ["Patient Data Masking", "Policy Rules Engine", "Encryption Gateway", "HIPAA Proxy Validation"]
         }
     };
+
+    // This state object carries over the active workload context (Preset OR custom parsed NLP requirements)
+    let compiledDocketData = { ...brdData.telco };
 
     // Tab details for header text overrides
     const stepHeaders = {
@@ -390,21 +422,76 @@ function initADLCLifecycle() {
             brdBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             selectedBrd = btn.getAttribute('data-brd');
+            
+            // Clear custom input if switching templates to avoid confusion
+            const customTextarea = document.getElementById('custom-intent-textarea');
+            if (customTextarea) customTextarea.value = '';
         });
     });
 
     if (btnAnalyze) {
         btnAnalyze.addEventListener('click', () => {
-            const data = brdData[selectedBrd];
+            // Check if user entered a custom intent in the textarea
+            let customText = "";
+            const customTextarea = document.getElementById('custom-intent-textarea');
+            if (customTextarea) {
+                customText = customTextarea.value.trim();
+            }
+
+            let data = { ...brdData[selectedBrd] };
+            if (customText.length > 0) {
+                // Parse the custom requirement string to configure a dynamic custom docket!
+                data.name = "CustomOrchestratedAgent";
+                data.docket_id = "DCK-CUSTOM-" + Math.floor(1000 + Math.random() * 9000);
+                data.workload_identity = "sa-custom-agent@nsam-prod.iam";
+                
+                const tools = [];
+                const capabilities = [];
+                
+                if (/mysql|postgres|db|database|sql|log/i.test(customText)) {
+                    tools.push("query_secure_database", "validate_schema_bounds");
+                    capabilities.push("Database Queries", "Schema Integrity Auditing");
+                }
+                if (/slack|teams|alert|notify|mail|email|pagerduty/i.test(customText)) {
+                    tools.push("dispatch_slack_alert", "pagerduty_incident_trigger");
+                    capabilities.push("Outbound Alert Notification Routing");
+                }
+                if (/s3|bucket|gcs|azure blob|storage|file|upload/i.test(customText)) {
+                    tools.push("read_storage_object", "write_secure_blob");
+                    capabilities.push("Object Storage Sync");
+                }
+                
+                if (tools.length === 0) {
+                    tools.push("execute_limited_subshell", "read_transient_logs");
+                    capabilities.push("Generic Task Sandbox Execution");
+                }
+                
+                let model = "gemini-2.5-flash@enterprise";
+                if (/pro|complex|reasoning|critical/i.test(customText)) {
+                    model = "gemini-2.5-pro-highconcurrency";
+                } else if (/compliant|hipaa|phi/i.test(customText)) {
+                    model = "gemini-2.5-flash-phi-compliant";
+                }
+                
+                data.least_privilege_tools = tools;
+                data.authorized_llm = model;
+                data.budget_limit = "300,000 tokens / hour";
+                data.capabilities = capabilities;
+            }
+
+            // Save state globally so stages 2-6 consume the exact compiled context!
+            compiledDocketData = { ...data };
+
             const logs = [
-                { text: `[ORCHESTRATOR] Initializing Requirement Decomposition Engine...`, type: 'system', delay: 300 },
-                { text: `[ORCHESTRATOR] Selected Business Requirement Document (BRD): <span class='highlight'>${data.name}</span>`, type: 'system', delay: 300 },
-                { text: `[ORCHESTRATOR] Decomposing plain-text natural intent into declarative schemas...`, type: 'text', delay: 500 },
-                { text: `[ORCHESTRATOR] Identified target platform service actions: [${data.least_privilege_tools.join(', ')}]`, type: 'text', delay: 400 },
-                { text: `[ORCHESTRATOR] Hardening capability bounds to least-privilege matrix...`, type: 'warning', delay: 400 },
-                { text: `[ORCHESTRATOR] Generating transient workload identity: <span class='highlight'>${data.workload_identity}</span>`, type: 'text', delay: 450 },
-                { text: `[ORCHESTRATOR] Binding secure foundational model target: ${data.authorized_llm}`, type: 'text', delay: 300 },
-                { text: `[SUCCESS] Immutable envelope boundaries established! Generated Docket ID: ${data.docket_id}`, type: 'success', delay: 400 }
+                { text: `[ORCHESTRATOR] Initializing Requirement Decomposition Engine...`, type: 'system', delay: 250 },
+                { text: `[ORCHESTRATOR] Input Method: ${customText.length > 0 ? "Custom Natural Intent" : "Preset Enterprise BRD Blueprint"}`, type: 'system', delay: 250 },
+                { text: `[ORCHESTRATOR] Selected Business Requirement Target: <span class='highlight'>${data.name}</span>`, type: 'system', delay: 250 },
+                { text: `[ORCHESTRATOR] Decomposing plain-text natural intent into declarative schemas...`, type: 'text', delay: 400 },
+                { text: `[ORCHESTRATOR] Identified target platform service actions: [${data.least_privilege_tools.join(', ')}]`, type: 'text', delay: 350 },
+                { text: `[ORCHESTRATOR] Hardening capability bounds to least-privilege matrix...`, type: 'warning', delay: 300 },
+                { text: `[ORCHESTRATOR] Generating transient workload identity: <span class='highlight'>${data.workload_identity}</span>`, type: 'text', delay: 350 },
+                { text: `[ORCHESTRATOR] Binding secure foundational model target: ${data.authorized_llm}`, type: 'text', delay: 250 },
+                { text: `[SUCCESS] Immutable envelope boundaries established! Generated Docket ID: ${data.docket_id}`, type: 'success', delay: 300 }
             ];
 
             btnAnalyze.disabled = true;
@@ -431,10 +518,10 @@ function initADLCLifecycle() {
                         "authorized_llm_endpoints": [data.authorized_llm],
                         "workload_identity": data.workload_identity,
                         "least_privilege_tools": data.least_privilege_tools,
-                        "token_budget_limit_hour": parseInt(data.budget_limit.replace(/,/g, ''))
+                        "token_budget_limit_hour": parseInt(data.budget_limit.replace(/,/g, '').split(' ')[0])
                     },
                     "compliance": {
-                        "phi_conformant": selectedBrd === 'healthcare',
+                        "phi_conformant": selectedBrd === 'healthcare' || /hipaa|phi/i.test(customText),
                         "financial_fiduciary_audit": selectedBrd === 'finance',
                         "data_leak_shield": true
                     }
@@ -445,6 +532,10 @@ function initADLCLifecycle() {
                 btnAnalyze.disabled = false;
                 btnAnalyze.innerHTML = `<i class="fa-solid fa-gears animate-spin-slow"></i> Re-Analyze Requirements`;
                 
+                // Update sandbox id in stage 3 template
+                const sandboxIdDisplay = document.getElementById('sandbox-id-display');
+                if (sandboxIdDisplay) sandboxIdDisplay.innerText = data.docket_id;
+
                 // Prompt progression
                 setTimeout(() => {
                     switchToStep(2);
@@ -468,45 +559,119 @@ function initADLCLifecycle() {
     // ==========================================
     if (btnEval) {
         btnEval.addEventListener('click', () => {
-            const data = brdData[selectedBrd];
+            const data = compiledDocketData;
+            
+            // Boot Visual Container Widget
+            const statusInd = document.getElementById('sandbox-status-indicator');
+            if (statusInd) {
+                statusInd.innerText = "BOOTING";
+                statusInd.className = "badge text-glow-cyan animate-pulse";
+            }
+
+            const shield = document.getElementById('gvisor-shield');
+            const boxIcon = document.getElementById('container-box-icon');
+            const firewallLogs = document.getElementById('sandbox-firewall-logs');
+
+            if (shield) {
+                shield.style.borderColor = 'var(--color-primary)';
+                shield.style.boxShadow = '0 0 15px var(--color-glow)';
+                shield.style.borderStyle = 'solid';
+                shield.classList.add('animate-pulse');
+            }
+            if (boxIcon) {
+                boxIcon.style.color = 'var(--color-primary)';
+            }
+            if (firewallLogs) {
+                firewallLogs.innerText = "Loading micro-kernel boundaries...";
+                firewallLogs.style.color = '#9ca3af';
+            }
+
             const logs = [
-                { text: `[SANDBOX] Provisioning hermetically sealed sandbox on gVisor runtime...`, type: 'system', delay: 300 },
-                { text: `[SANDBOX] Pulling secure foundational image 'orcas-sandbox-node:latest'...`, type: 'text', delay: 400 },
-                { text: `[SANDBOX] Loading compiled docket envelope <span class='highlight'>${data.docket_id}</span>`, type: 'text', delay: 300 },
+                { text: `[SANDBOX] Provisioning hermetically sealed sandbox on gVisor runtime...`, type: 'system', delay: 250 },
+                { text: `[SANDBOX] Pulling secure foundational image 'orcas-sandbox-node:latest'...`, type: 'text', delay: 350 },
+                { text: `[SANDBOX] Loading compiled docket envelope <span class='highlight'>${data.docket_id}</span>`, type: 'text', delay: 250 },
                 { text: `[SANDBOX] Initializing Test Suite 1: Safety & Prompt Injection Shield`, type: 'system', delay: 200 },
-                { text: `[TEST] Fuzzing system endpoints with adversarial prompt matrices...`, type: 'text', delay: 500 },
-                { text: `[TEST] Prompt Injection Shield: 100% of leaked intents blocked. (Confidence score: 0.998)`, type: 'success', delay: 300 },
+                { text: `[TEST] Fuzzing system endpoints with adversarial prompt matrices...`, type: 'text', delay: 450 },
+                { text: `[TEST] Prompt Injection Shield: 100% of leaked intents blocked. (Confidence score: 0.998)`, type: 'success', delay: 250 },
                 { text: `[SANDBOX] Initializing Test Suite 2: Functional Smoke Loops`, type: 'system', delay: 200 },
-                { text: `[TEST] Simulating capabilities: [${data.least_privilege_tools.join(', ')}]`, type: 'text', delay: 400 },
-                { text: `[TEST] System mock responses verified. Mock Database integrity matched.`, type: 'success', delay: 300 },
+                { text: `[TEST] Simulating capabilities: [${data.least_privilege_tools.join(', ')}]`, type: 'text', delay: 350 },
+                { text: `[TEST] System mock responses verified. Mock Database integrity matched.`, type: 'success', delay: 250 },
                 { text: `[SANDBOX] Initializing Test Suite 3: Latency & Budget Throttles`, type: 'system', delay: 200 },
-                { text: `[TEST] Simulating concurrency loads (100 parallel mock sessions)...`, type: 'text', delay: 400 },
-                { text: `[TEST] Latency performance standard: Median 120ms, Peak 310ms (Within SLA).`, type: 'success', delay: 300 },
-                { text: `[SUCCESS] Sandbox assertions passed completely! Evidence payload hashes compiled.`, type: 'success', delay: 400 }
+                { text: `[TEST] Simulating concurrency loads (100 parallel mock sessions)...`, type: 'text', delay: 350 },
+                { text: `[TEST] Latency performance standard: Median 120ms, Peak 310ms (Within SLA).`, type: 'success', delay: 250 },
+                { text: `[SUCCESS] Sandbox assertions passed completely! Evidence payload hashes compiled.`, type: 'success', delay: 350 }
             ];
 
             btnEval.disabled = true;
             btnEval.innerHTML = `<i class="fa-solid fa-arrows-spin fa-spin"></i> Executing Evals...`;
 
-            // Reset fills
+            // Reset progress fills
             fillSafety.style.width = '0%';
             fillSmoke.style.width = '0%';
             fillLatency.style.width = '0%';
+
+            // Active metrics updater interval
+            if (metricInterval) clearInterval(metricInterval);
+            metricInterval = setInterval(() => {
+                const cpu = Math.floor(25 + Math.random() * 50);
+                const mem = Math.floor(135 + Math.random() * 70);
+                
+                const cpuVal = document.getElementById('sandbox-cpu-val');
+                const cpuFill = document.getElementById('sandbox-cpu-fill');
+                if (cpuVal) cpuVal.innerText = `${cpu}%`;
+                if (cpuFill) cpuFill.style.width = `${cpu}%`;
+
+                const memVal = document.getElementById('sandbox-mem-val');
+                const memFill = document.getElementById('sandbox-mem-fill');
+                if (memVal) memVal.innerText = `${mem} MB`;
+                if (memFill) memFill.style.width = `${(mem / 256) * 100}%`;
+
+                const netVal = document.getElementById('sandbox-network-val');
+                if (netVal) {
+                    netVal.innerText = Math.random() > 0.3 ? "ISOLATED" : "FILTERED";
+                    netVal.style.color = "var(--color-primary)";
+                }
+
+                // Simulate Firewall Blockingexfiltration attempts
+                if (firewallLogs) {
+                    const blocklist = ["evil-sink.ru", "data-exfil.net", "attacker-dns.org", "shady-domain.co"];
+                    const randomBlocked = blocklist[Math.floor(Math.random() * blocklist.length)];
+                    firewallLogs.innerHTML = `<span style="color: var(--color-red-500); font-weight: bold;"><i class="fa-solid fa-ban"></i> Intercepted & Blocked Outbound Connection to ${randomBlocked}</span>`;
+                }
+            }, 600);
 
             simulateTerminalTyping(console3, logs, () => {
                 completedSteps.add(3);
                 btnEval.disabled = false;
                 btnEval.innerHTML = `<i class="fa-solid fa-vial"></i> Re-Run Sandbox Evals`;
                 
+                if (statusInd) {
+                    statusInd.innerText = "VERIFIED";
+                    statusInd.className = "badge text-glow-green";
+                }
+                if (shield) {
+                    shield.classList.remove('animate-pulse');
+                    shield.style.borderColor = '#10B981';
+                    shield.style.boxShadow = '0 0 15px rgba(16,185,129,0.3)';
+                }
+                if (boxIcon) {
+                    boxIcon.style.color = '#10B981';
+                }
+                if (firewallLogs) {
+                    firewallLogs.innerHTML = `<span style="color: #10B981; font-weight: bold;"><i class="fa-solid fa-circle-check"></i> gVisor Isolation Verified (Zero leaks detected)</span>`;
+                }
+
+                clearInterval(metricInterval);
+
                 setTimeout(() => {
                     switchToStep(4);
                 }, 1000);
             });
 
             // Animate progress bars synchronously with typing logs
-            setTimeout(() => fillSafety.style.width = '100%', 1200);
-            setTimeout(() => fillSmoke.style.width = '100%', 2200);
-            setTimeout(() => fillLatency.style.width = '100%', 3200);
+            setTimeout(() => fillSafety.style.width = '100%', 1000);
+            setTimeout(() => fillSmoke.style.width = '100%', 2000);
+            setTimeout(() => fillLatency.style.width = '100%', 3000);
         });
     }
 
@@ -516,9 +681,32 @@ function initADLCLifecycle() {
     if (sigNameInput) {
         sigNameInput.addEventListener('input', (e) => {
             const val = e.target.value.trim();
+            const statusEl = document.getElementById('keypair-status');
+            const pubEl = document.getElementById('pub-key-hash');
+            const privEl = document.getElementById('priv-key-hash');
+
             if (val.length > 0) {
                 sigWave.classList.add('active');
                 sigPlaceholder.innerHTML = `<span style="font-family: 'Mrs Saint Delafield', 'Caveat', cursive; font-size: 2.8rem; color: var(--color-primary); font-weight: 500; text-shadow: 0 0 10px var(--color-glow);">${val}</span>`;
+                
+                if (statusEl) {
+                    statusEl.innerText = "KEYPAIR COMPILED";
+                    statusEl.style.color = "var(--color-primary)";
+                    statusEl.className = "text-glow-cyan animate-pulse";
+                }
+
+                // Create a deterministic hash from the typed signature name
+                let hashNum = 0;
+                for (let i = 0; i < val.length; i++) {
+                    hashNum = val.charCodeAt(i) + ((hashNum << 5) - hashNum);
+                    hashNum = hashNum & hashNum; // Convert to 32bit integer
+                }
+                const seedPub = Math.abs(hashNum).toString(16).padEnd(16, 'f').slice(0, 16);
+                const seedPriv = Math.abs(hashNum * 1204).toString(16).padEnd(16, 'a').slice(0, 16);
+
+                if (pubEl) pubEl.innerText = `0x3a4b${seedPub}89c2de${seedPub}ef01`;
+                if (privEl) privEl.innerText = `0x9e12${seedPriv}1a4b${seedPriv}cd89`;
+
                 if (val.length >= 3) {
                     btnSign.removeAttribute('disabled');
                 } else {
@@ -527,6 +715,13 @@ function initADLCLifecycle() {
             } else {
                 sigWave.classList.remove('active');
                 sigPlaceholder.innerText = "Awaiting signature...";
+                if (statusEl) {
+                    statusEl.innerText = "UNGENERATED";
+                    statusEl.style.color = "#6b7280";
+                    statusEl.className = "";
+                }
+                if (pubEl) pubEl.innerText = "0x0000000000000000000000000000000000000000000000000000000000000000...";
+                if (privEl) privEl.innerText = "0x0000000000000000000000000000000000000000000000000000000000000000";
                 btnSign.setAttribute('disabled', 'true');
             }
         });
@@ -534,16 +729,16 @@ function initADLCLifecycle() {
 
     if (btnSign) {
         btnSign.addEventListener('click', () => {
-            const data = brdData[selectedBrd];
+            const data = compiledDocketData;
             const sigName = sigNameInput.value.trim();
             const logs = [
-                { text: `[LEDGER] Contacting decentralized authority key broker...`, type: 'system', delay: 300 },
-                { text: `[LEDGER] Verifying authority credential matching identity: <span class='highlight'>${sigName}</span>`, type: 'text', delay: 400 },
-                { text: `[LEDGER] Digesting sandboxed evidence bundle with docket DCK-${data.docket_id}`, type: 'text', delay: 300 },
-                { text: `[LEDGER] Hashing algorithm: SHA-256`, type: 'text', delay: 200 },
-                { text: `[LEDGER] Signing with cryptographic ECDSA Secp256k1 key-pair...`, type: 'warning', delay: 450 },
-                { text: `[LEDGER] Generated Signature hash: 0x${Array.from({length: 64}, () => Math.floor(Math.random()*16).toString(16)).join('')}`, type: 'success', delay: 400 },
-                { text: `[SUCCESS] Seal registered in Audit Ledger! Payload locked dynamically.`, type: 'success', delay: 300 }
+                { text: `[LEDGER] Contacting decentralized authority key broker...`, type: 'system', delay: 250 },
+                { text: `[LEDGER] Verifying authority credential matching identity: <span class='highlight'>${sigName}</span>`, type: 'text', delay: 350 },
+                { text: `[LEDGER] Digesting sandboxed evidence bundle with docket DCK-${data.docket_id}`, type: 'text', delay: 250 },
+                { text: `[LEDGER] Hashing algorithm: SHA-256`, type: 'text', delay: 150 },
+                { text: `[LEDGER] Signing with cryptographic ECDSA Secp256k1 key-pair...`, type: 'warning', delay: 400 },
+                { text: `[LEDGER] Generated Signature hash: 0x${Array.from({length: 64}, () => Math.floor(Math.random()*16).toString(16)).join('')}`, type: 'success', delay: 350 },
+                { text: `[SUCCESS] Seal registered in Audit Ledger! Payload locked dynamically.`, type: 'success', delay: 250 }
             ];
 
             btnSign.disabled = true;
@@ -558,10 +753,18 @@ function initADLCLifecycle() {
                 sigStamp.classList.remove('hidden');
                 sigStamp.classList.add('sealed');
 
+                const statusEl = document.getElementById('keypair-status');
+                if (statusEl) {
+                    statusEl.innerText = "AUDIT SECURED";
+                    statusEl.style.color = "#10B981";
+                    statusEl.className = "text-glow-green";
+                }
+
                 setTimeout(() => {
                     switchToStep(5);
                     // Generate Initial IaC notes and code based on selectedCloud
                     updateCloudIntegrationPanel();
+                    updateCloudTopologySVG();
                 }, 2000);
             });
         });
@@ -576,6 +779,7 @@ function initADLCLifecycle() {
             btn.classList.add('active');
             selectedCloud = btn.getAttribute('data-cloud');
             updateCloudIntegrationPanel();
+            updateCloudTopologySVG();
         });
     });
 
@@ -661,12 +865,13 @@ spec:
             - name: LLM_GATEWAY_URL
               value: "https://llm-gateway.nsam.local"
             - name: MAX_TOKENS_HOUR
-              value: "${data.budget_limit.split(' ')[0].replace(/,/g, '')}"`
+              value: "300000"
+`
         }
     };
 
     function updateCloudIntegrationPanel() {
-        const data = brdData[selectedBrd];
+        const data = compiledDocketData;
         const config = cloudConfigs[selectedCloud];
         
         iacViewerLabel.innerText = config.label;
@@ -674,9 +879,29 @@ spec:
         iacCodeView.innerHTML = highlightJSON(config.code(data));
     }
 
+    function updateCloudTopologySVG() {
+        const label = document.getElementById('target-cloud-label');
+        const iconContainer = document.getElementById('target-cloud-icon-div');
+        if (!label || !iconContainer) return;
+
+        if (selectedCloud === 'gcp') {
+            label.innerText = 'GCP GKE';
+            iconContainer.innerHTML = '<i id="target-cloud-icon" class="fa-brands fa-google" style="font-size: 11px; color: #4285F4;"></i>';
+        } else if (selectedCloud === 'azure') {
+            label.innerText = 'AZURE AKS';
+            iconContainer.innerHTML = '<i id="target-cloud-icon" class="fa-brands fa-microsoft" style="font-size: 11px; color: #00A4EF;"></i>';
+        } else if (selectedCloud === 'aws') {
+            label.innerText = 'AWS EKS';
+            iconContainer.innerHTML = '<i id="target-cloud-icon" class="fa-brands fa-aws" style="font-size: 11px; color: #FF9900;"></i>';
+        } else if (selectedCloud === 'hybrid') {
+            label.innerText = 'HYBRID RANCHER';
+            iconContainer.innerHTML = '<i id="target-cloud-icon" class="fa-solid fa-network-wired" style="font-size: 10px; color: var(--color-primary);"></i>';
+        }
+    }
+
     if (btnDeploy) {
         btnDeploy.addEventListener('click', () => {
-            const data = brdData[selectedBrd];
+            const data = compiledDocketData;
             
             btnDeploy.disabled = true;
             btnDeploy.innerHTML = `<i class="fa-solid fa-arrows-spin fa-spin"></i> Triggering Dev Pipelines...`;
@@ -692,6 +917,20 @@ spec:
                 `[SUCCESS] Deployment payload dispatched successfully! Awaiting cluster synchronization.`
             ];
 
+            // Animate glowing path packet traversal in SVG!
+            const glowingPath = document.getElementById('svg-flow-path-glowing');
+            if (glowingPath) {
+                glowingPath.style.display = 'block';
+                glowingPath.style.strokeDashoffset = '320';
+                glowingPath.style.transition = 'none';
+                
+                // Trigger reflow
+                glowingPath.getBoundingClientRect();
+                
+                glowingPath.style.transition = 'stroke-dashoffset 2.5s linear';
+                glowingPath.style.strokeDashoffset = '0';
+            }
+
             // Render sequentially
             let index = 0;
             iacCodeView.innerHTML = '';
@@ -704,7 +943,7 @@ spec:
                     iacCodeView.appendChild(span);
                     iacCodeView.scrollTop = iacCodeView.scrollHeight;
                     index++;
-                    setTimeout(printIaCLog, 400);
+                    setTimeout(printIaCLog, 350);
                 } else {
                     completedSteps.add(5);
                     btnDeploy.disabled = false;
@@ -724,22 +963,67 @@ spec:
     // STEP 6: Solace Mesh Synchronization
     // ==========================================
     function triggerMeshSyncSimulation() {
-        const data = brdData[selectedBrd];
+        const data = compiledDocketData;
         const logs = [
             { text: `[SOLACE] Ingress connection open. Dynamic event broker ready on port 55555.`, type: 'system', delay: 250 },
             { text: `[SOLACE] Ingesting deployment audit payload for DCK envelope <span class='highlight'>${data.docket_id}</span>`, type: 'text', delay: 350 },
-            { text: `[SOLACE] Cryptographic hash verified. CISO signature: APPROVED.`, type: 'success', delay: 300 },
+            { text: `[SOLACE] Cryptographic hash verified. CISO signature: APPROVED.`, type: 'success', delay: 250 },
             { text: `[SOLACE] Mapping agent workload identity inside live Mesh Topology...`, type: 'text', delay: 400 },
-            { text: `[SOLACE] Synchronization event dispatched to all gateway routing brokers.`, type: 'system', delay: 300 },
-            { text: `[SOLACE] Hydrating local capability table in 'webui_gateway.db' registry.`, type: 'text', delay: 450 },
-            { text: `[SOLACE] Registered agent service: '${data.name}' with authorized tools.`, type: 'success', delay: 350 },
-            { text: `[SOLACE] Live heartbeat synchronized! Emitting operations pulse telemetry.`, type: 'system', delay: 300 },
+            { text: `[SOLACE] Synchronization event dispatched to all gateway routing brokers.`, type: 'system', delay: 250 },
+            { text: `[SOLACE] Hydrating local capability table in 'webui_gateway.db' registry.`, type: 'text', delay: 400 },
+            { text: `[SOLACE] Registered agent service: '${data.name}' with authorized tools.`, type: 'success', delay: 300 },
+            { text: `[SOLACE] Live heartbeat synchronized! Emitting operations pulse telemetry.`, type: 'system', delay: 250 },
             { text: `[SYSTEM] OrcasAgent™ ADLC Deployment lifecycle successfully synchronized!`, type: 'success', delay: 300 }
         ];
 
         simulateTerminalTyping(console6, logs, () => {
             completedSteps.add(6);
         });
+
+        // Initialize Live Mesh Event Ticker Stream
+        const streamContainer = document.getElementById('mesh-event-ticker-stream');
+        if (streamContainer) {
+            streamContainer.innerHTML = '';
+            if (tickerInterval) clearInterval(tickerInterval);
+
+            let eventCount = 1;
+            tickerInterval = setInterval(() => {
+                const span = document.createElement('div');
+                span.className = 'line';
+                span.style.fontFamily = 'var(--font-mono)';
+                span.style.fontSize = '0.65rem';
+                span.style.color = '#10B981';
+                span.style.borderLeft = '2px solid var(--color-cyan-500)';
+                span.style.paddingLeft = '6px';
+                span.style.marginBottom = '4px';
+                span.style.animation = 'fadeInSlide 0.2s ease';
+
+                const timestamp = new Date().toISOString();
+                const latency = Math.floor(10 + Math.random() * 40);
+                const mockEvent = {
+                    "event_id": `evt-mesh-${1000 + eventCount}`,
+                    "timestamp": timestamp,
+                    "publisher": data.name,
+                    "docket_id": data.docket_id,
+                    "telemetry": {
+                        "heartbeat_ms": latency,
+                        "status": "HEALTHY",
+                        "active_sessions": Math.floor(1 + Math.random() * 8)
+                    }
+                };
+
+                span.innerHTML = `<span style="color: #6b7280;">[${timestamp.split('T')[1].slice(0,8)}]</span> <span style="color: var(--color-cyan-500); font-weight: bold;">PUBLISH</span> <span style="color: #ffffff;">${JSON.stringify(mockEvent)}</span>`;
+                streamContainer.appendChild(span);
+                streamContainer.scrollTop = streamContainer.scrollHeight;
+
+                eventCount++;
+                
+                // Limit maximum stream elements to 10 to prevent overflow
+                if (streamContainer.children.length > 8) {
+                    streamContainer.removeChild(streamContainer.firstChild);
+                }
+            }, 1200);
+        }
     }
 
     if (btnComplete) {
@@ -788,7 +1072,7 @@ spec:
         title.style.color = '#FFF';
 
         const bodyText = document.createElement('p');
-        bodyText.innerHTML = `Orchestrator agent <span style="color: var(--color-primary); font-weight: bold;">${brdData[selectedBrd].name}</span> has been successfully designed, vetted, signed, provisioned via Infrastructure-as-Code templates, and synchronised within the Solace Event Mesh!`;
+        bodyText.innerHTML = `Orchestrator agent <span style="color: var(--color-primary); font-weight: bold;">${compiledDocketData.name}</span> has been successfully designed, vetted, signed, provisioned via Infrastructure-as-Code templates, and synchronised within the Solace Event Mesh!`;
         bodyText.style.fontSize = '0.88rem';
         bodyText.style.lineHeight = '1.5';
         bodyText.style.color = 'rgba(255,255,255,0.75)';
@@ -804,6 +1088,11 @@ spec:
         
         closeButton.addEventListener('click', () => {
             document.body.removeChild(modal);
+            
+            // Clear intervals
+            if (tickerInterval) clearInterval(tickerInterval);
+            if (metricInterval) clearInterval(metricInterval);
+
             // Reset state
             completedSteps.clear();
             sigNameInput.value = '';
@@ -818,10 +1107,32 @@ spec:
             console4.innerHTML = `<span class="line text-muted">[SYSTEM] Awaiting signature. Audit trail initialized.</span>`;
             console6.innerHTML = `<span class="line text-muted">[SYSTEM] Listening on topic: "nsam/deployment/registry"</span>`;
             
+            const streamContainer = document.getElementById('mesh-event-ticker-stream');
+            if (streamContainer) {
+                streamContainer.innerHTML = `<span class="line text-muted" style="color: #6b7280; font-style: italic;">Awaiting mesh handshake attestation...</span>`;
+            }
+
+            const glowingPath = document.getElementById('svg-flow-path-glowing');
+            if (glowingPath) {
+                glowingPath.style.display = 'none';
+            }
+
+            const keypairStatus = document.getElementById('keypair-status');
+            const pubHash = document.getElementById('pub-key-hash');
+            const privHash = document.getElementById('priv-key-hash');
+            if (keypairStatus) {
+                keypairStatus.innerText = "UNGENERATED";
+                keypairStatus.style.color = "#6b7280";
+                keypairStatus.className = "";
+            }
+            if (pubHash) pubHash.innerText = "0x0000000000000000000000000000000000000000000000000000000000000000...";
+            if (privHash) privHash.innerText = "0x0000000000000000000000000000000000000000000000000000000000000000";
+
             fillSafety.style.width = '0%';
             fillSmoke.style.width = '0%';
             fillLatency.style.width = '0%';
 
+            compiledDocketData = { ...brdData.telco };
             switchToStep(1);
         });
 

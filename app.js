@@ -53,13 +53,34 @@ function initAuraThemeSelector() {
             '--color-ink-950': '#041026',
             '--glow-cyan': 'rgba(18, 184, 215, 0.4)'
         }
-    };
+    // Set initial theme based on saved theme or active button
+    let savedTheme = localStorage.getItem('orcas-theme') || 'azure';
+    if (!themes[savedTheme]) savedTheme = 'azure';
+    currentTheme = savedTheme;
 
-    // Set initial theme based on active button
-    const activeBtn = document.querySelector('.theme-selector-btn.active');
-    if (activeBtn) {
-        currentTheme = activeBtn.dataset.theme;
-        document.body.classList.add(`theme-${currentTheme}`);
+    // Apply active theme immediately
+    document.body.classList.remove('theme-azure', 'theme-cyberpunk', 'theme-emerald', 'theme-twilight');
+    document.body.classList.add(`theme-${currentTheme}`);
+    if (currentTheme !== 'azure') {
+        document.body.classList.add('dark-active');
+    } else {
+        document.body.classList.remove('dark-active');
+    }
+
+    // Set initial button active state and apply variables
+    themeButtons.forEach(btn => {
+        if (btn.dataset.theme === currentTheme) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+
+    const initialTokens = themes[currentTheme];
+    if (initialTokens) {
+        Object.keys(initialTokens).forEach(key => {
+            document.documentElement.style.setProperty(key, initialTokens[key]);
+        });
     }
 
     themeButtons.forEach(btn => {
@@ -68,8 +89,9 @@ function initAuraThemeSelector() {
             btn.classList.add('active');
             
             const themeName = btn.dataset.theme;
-            const themeTokens = themes[themeName];
+            localStorage.setItem('orcas-theme', themeName);
             
+            const themeTokens = themes[themeName];
             if (themeTokens) {
                 // Update global state
                 currentTheme = themeName;
@@ -80,9 +102,7 @@ function initAuraThemeSelector() {
                 });
                 
                 // Toggle global dark-active and theme classes
-                themeButtons.forEach(b => {
-                    document.body.classList.remove(`theme-${b.dataset.theme}`);
-                });
+                document.body.classList.remove('theme-azure', 'theme-cyberpunk', 'theme-emerald', 'theme-twilight');
                 document.body.classList.add(`theme-${themeName}`);
 
                 if (themeName !== 'azure') {
@@ -91,6 +111,7 @@ function initAuraThemeSelector() {
                     document.body.classList.remove('dark-active');
                 }
             }
+            window.dispatchEvent(new Event('themeChanged'));
         });
     });
 }
