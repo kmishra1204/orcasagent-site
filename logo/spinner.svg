@@ -1,0 +1,136 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <style>
+    /* CSS Animations built natively into the SVG for performance */
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @keyframes swimBob {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-3px) rotate(1.5deg); }
+    }
+    @keyframes bubbleUp1 {
+      0% { transform: translate(0, 0) scale(0.6); opacity: 0; }
+      20% { opacity: 0.8; }
+      100% { transform: translate(-12px, -35px) scale(1.1); opacity: 0; }
+    }
+    @keyframes bubbleUp2 {
+      0% { transform: translate(0, 0) scale(0.4); opacity: 0; }
+      30% { opacity: 0.9; }
+      100% { transform: translate(10px, -45px) scale(1.0); opacity: 0; }
+    }
+    
+    .loading-ring {
+      transform-origin: 100px 100px;
+      animation: spin 1.8s linear infinite;
+    }
+    .orca-character {
+      transform-origin: 100px 100px;
+      animation: swimBob 3.5s ease-in-out infinite;
+    }
+    .bubble-1 {
+      animation: bubbleUp1 2.2s infinite ease-out;
+    }
+    .bubble-2 {
+      animation: bubbleUp2 1.8s infinite ease-out;
+      animation-delay: 0.9s;
+    }
+    
+    /* Brand Vector Styling */
+    .outline { stroke: #081635; stroke-width: 4.5; stroke-linecap: round; stroke-linejoin: round; }
+    .fill-blue { fill: #12b8d7; }
+    .fill-pink { fill: #ff7c80; }
+    .fill-green { fill: #a2f51f; }
+    .fill-dark { fill: #081635; }
+    .fill-white { fill: #ffffff; }
+    .fill-tongue { fill: #ff5d7d; }
+  </style>
+
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#12b8d7" stop-opacity="0.1" />
+      <stop offset="50%" stop-color="#12b8d7" stop-opacity="0.85" />
+      <stop offset="100%" stop-color="#a2f51f" />
+    </linearGradient>
+  </defs>
+
+  <!-- Outer Rotating Loader Ring -->
+  <circle class="loading-ring" cx="100" cy="100" r="82" fill="none" stroke="url(#ringGradient)" stroke-width="4.5" stroke-dasharray="380 140" stroke-linecap="round" />
+
+  <!-- Bubbles emerging from the blowhole coordinate space -->
+  <g class="orca-character">
+    <g transform="translate(113, 77)">
+      <circle class="bubble-1" cx="0" cy="0" r="3.5" fill="#12b8d7" opacity="0" />
+      <circle class="bubble-2" cx="0" cy="0" r="2.2" fill="#a2f51f" opacity="0" />
+    </g>
+  </g>
+
+  <!-- Cute Orca Mascot Group (Bobbing inside the ring) -->
+  <g class="orca-character">
+    <!-- Apply scale and translation to fit inside the spinner ring perfectly -->
+    <g transform="translate(100, 100) scale(0.6) translate(-120, -95)">
+      <!-- Right Flipper (Background) -->
+      <path class="outline fill-pink" d="M 175,130 C 182,130, 202,145, 208,155 C 200,158, 185,152, 175,142 C 170,137, 172,132, 175,130 Z" />
+      <path class="fill-blue outline" d="M 175,130 C 178,132, 192,142, 204,152 C 205,150, 205,146, 201,140 C 195,132, 185,130, 175,130 Z" />
+
+      <!-- Tail Fluke (Back lob) -->
+      <path class="outline fill-pink" d="M 40,82 C 32,80, 15,68, 12,68 C 16,80, 32,95, 45,95 C 43,90, 42,85, 40,82 Z" />
+      <path class="outline fill-blue" d="M 40,82 C 32,80, 15,68, 12,68 C 22,68, 38,78, 40,82 Z" stroke="none" />
+
+      <!-- Tail Stem & Main Body -->
+      <path class="outline fill-blue" d="M 45,95 
+               C 50,75, 75,55, 115,52 
+               C 155,52, 188,75, 188,110 
+               C 188,138, 160,158, 120,158 
+               C 95,158, 75,145, 62,132 
+               C 52,120, 40,115, 30,110
+               C 22,106, 22,102, 30,100
+               C 38,98, 42,98, 45,95 Z" />
+
+      <!-- Dorsal Fin -->
+      <path class="outline fill-blue" d="M 115,52 C 112,38, 102,30, 95,30 C 100,42, 105,48, 108,52" />
+      <path d="M 106,53 C 110,53, 113,52, 115,52" fill="none" stroke="#12b8d7" stroke-width="6" />
+
+      <!-- Tail Fluke Front Lob -->
+      <path class="outline fill-pink" d="M 30,110 C 22,106, 10,95, 8,95 C 14,105, 28,118, 40,118 C 38,115, 34,112, 30,110 Z" />
+
+      <!-- Underbelly -->
+      <path class="outline fill-green" d="M 75,135 
+               C 85,145, 100,158, 120,158 
+               C 145,158, 172,145, 178,130
+               C 176,125, 165,118, 160,118
+               L 170,120 L 164,126 L 158,120 L 152,126 L 146,120 L 140,126 L 134,120 L 128,126 L 122,120 L 116,126 L 110,120 L 104,126 L 98,120 L 92,126 L 86,120 L 80,126 Z" />
+
+      <!-- Dashed Line inside Green Belly -->
+      <path d="M 85,140 C 100,150, 120,152, 140,148 C 152,145, 162,140, 168,135" fill="none" stroke="#081635" stroke-width="2.5" stroke-dasharray="6,6" stroke-linecap="round" />
+
+      <!-- Left Flipper (Foreground) -->
+      <path class="outline fill-pink" d="M 75,125 C 68,125, 50,138, 45,148 C 52,152, 68,145, 75,135 C 78,130, 78,126, 75,125 Z" />
+      <path class="outline fill-blue" d="M 75,125 C 72,127, 58,138, 48,148 C 47,146, 48,142, 52,135 C 58,128, 68,125, 75,125 Z" />
+
+      <!-- Eyes -->
+      <circle class="fill-dark" cx="125" cy="98" r="9" />
+      <circle class="fill-white" cx="127" cy="95" r="3.2" />
+      <circle class="fill-white" cx="123" cy="100" r="1.6" />
+
+      <circle class="fill-dark" cx="165" cy="100" r="9" />
+      <circle class="fill-white" cx="167" cy="97" r="3.2" />
+      <circle class="fill-white" cx="163" cy="102" r="1.6" />
+
+      <!-- Smiling Mouth -->
+      <path class="outline fill-dark" d="M 135,110 C 135,122, 155,122, 155,110 Z" />
+      <path d="M 141,116 C 143,113, 147,113, 149,116 C 147,120, 143,120, 141,116 Z" class="fill-tongue" />
+
+      <!-- Blushing Cheeks -->
+      <rect x="110" y="102" width="10" height="5" rx="2.5" fill="#ff7c80" opacity="0.8" transform="rotate(-10 115 104)" />
+      <rect x="172" y="104" width="10" height="5" rx="2.5" fill="#ff7c80" opacity="0.8" transform="rotate(10 177 106)" />
+
+      <!-- Blowhole -->
+      <path d="M 135,58 C 138,56, 144,56, 147,58" fill="none" stroke="#081635" stroke-width="2.5" stroke-linecap="round" />
+
+      <!-- White Highlight -->
+      <ellipse cx="145" cy="68" rx="14" ry="7" fill="#ffffff" opacity="0.4" transform="rotate(-25 145 68)" />
+    </g>
+  </g>
+</svg>

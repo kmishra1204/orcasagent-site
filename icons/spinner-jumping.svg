@@ -1,0 +1,169 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%" fill="none">
+  <defs>
+    <style>
+      /* --- KEYFRAME ANIMATIONS --- */
+      @keyframes spinRing {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
+      /* Waves horizontal flowing sliding animation */
+      @keyframes wavesFlow {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-60px); }
+      }
+      
+      /* Professional Parabolic Jump Animation */
+      @keyframes orcaLeap {
+        0% {
+          transform: translate(30px, 90px) rotate(-30deg) scale(0.65);
+          opacity: 0;
+        }
+        5% {
+          opacity: 1;
+        }
+        /* Surging up out of water */
+        25% {
+          transform: translate(55px, 20px) rotate(-15deg) scale(0.65);
+        }
+        /* Peak apex of the jump, horizontal */
+        50% {
+          transform: translate(90px, 5px) rotate(5deg) scale(0.65);
+        }
+        /* Plunging back down into the water */
+        75% {
+          transform: translate(125px, 35px) rotate(35deg) scale(0.65);
+          opacity: 1;
+        }
+        82% {
+          transform: translate(135px, 75px) rotate(45deg) scale(0.65);
+          opacity: 0;
+        }
+        /* Submerged phase (resetting back to start) */
+        100% {
+          transform: translate(30px, 90px) rotate(-30deg) scale(0.65);
+          opacity: 0;
+        }
+      }
+
+      /* Splash droplets scale up and fade out */
+      @keyframes splashLeft {
+        0%, 15% { transform: scale(0); opacity: 0; }
+        20% { transform: scale(1); opacity: 1; }
+        35% { transform: scale(1.8); opacity: 0; }
+        100% { transform: scale(0); opacity: 0; }
+      }
+
+      @keyframes splashRight {
+        0%, 68% { transform: scale(0); opacity: 0; }
+        73% { transform: scale(1); opacity: 1; }
+        88% { transform: scale(1.8); opacity: 0; }
+        100% { transform: scale(0); opacity: 0; }
+      }
+
+      /* --- STYLE CLASSES --- */
+      .outer-loader-ring {
+        transform-origin: 100px 100px;
+        animation: spinRing 2.2s linear infinite;
+      }
+      .animated-waves {
+        animation: wavesFlow 1.2s linear infinite;
+      }
+      .jumping-orca {
+        transform-origin: center;
+        animation: orcaLeap 3.2s cubic-bezier(0.4, 0.0, 0.6, 1) infinite;
+      }
+      .splash-group-left {
+        transform-origin: 65px 120px;
+        animation: splashLeft 3.2s ease-out infinite;
+      }
+      .splash-group-right {
+        transform-origin: 135px 125px;
+        animation: splashRight 3.2s ease-out infinite;
+      }
+      
+      /* --- COLOR PALETTE --- */
+      .color-navy-bg { fill: #030e22; fill-opacity: 0.85; }
+      .color-ring { stroke: url(#ringGlowGradient); }
+      .color-wave-back { fill: none; stroke: #154573; stroke-width: 3; stroke-linecap: round; }
+      .color-wave-mid { fill: none; stroke: #1d5c9c; stroke-width: 4; stroke-linecap: round; }
+      .color-wave-front { fill: none; stroke: #2a7cd1; stroke-width: 4.5; stroke-linecap: round; }
+      .color-splash { fill: #2a7cd1; }
+      
+      .orca-black { fill: #20232c; }
+      .orca-white { fill: #e5e8f0; }
+      .orca-accent { fill: #82a4d6; }
+    </style>
+
+    <!-- Gradients -->
+    <linearGradient id="ringGlowGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00f0ff" stop-opacity="0.1" />
+      <stop offset="50%" stop-color="#00f0ff" stop-opacity="0.85" />
+      <stop offset="100%" stop-color="#39ff14" />
+    </linearGradient>
+    <filter id="glowEffect" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3.5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Circular Dark Background Platter with Glassmorphism Border -->
+  <circle class="color-navy-bg" cx="100" cy="100" r="92" stroke="#1d5c9c" stroke-width="1" />
+
+  <!-- Outer Technical Circular Gauge Spinner -->
+  <circle class="outer-loader-ring" cx="100" cy="100" r="80" fill="none" stroke="url(#ringGlowGradient)" stroke-width="3" stroke-dasharray="320 120" stroke-linecap="round" filter="url(#glowEffect)" />
+
+  <!-- Mask to constrain waves inside the inner circle platter -->
+  <clipPath id="platterClip">
+    <circle cx="100" cy="100" r="76" />
+  </clipPath>
+
+  <g clip-path="url(#platterClip)">
+    
+    <!-- Water Splashes at entry & exit points -->
+    <!-- Exit Splash (Left, where the Orca jumps out) -->
+    <g class="splash-group-left">
+      <circle class="color-splash" cx="62" cy="115" r="3" />
+      <circle class="color-splash" cx="54" cy="110" r="2.5" />
+      <circle class="color-splash" cx="70" cy="108" r="2" />
+      <path d="M 62,118 Q 50,95 45,102" stroke="#2a7cd1" stroke-width="2" fill="none" stroke-linecap="round" />
+      <path d="M 65,118 Q 75,98 80,105" stroke="#2a7cd1" stroke-width="1.5" fill="none" stroke-linecap="round" />
+    </g>
+
+    <!-- Entry Splash (Right, where the Orca dives back in) -->
+    <g class="splash-group-right">
+      <circle class="color-splash" cx="138" cy="118" r="3" />
+      <circle class="color-splash" cx="130" cy="112" r="2.5" />
+      <circle class="color-splash" cx="146" cy="114" r="2" />
+      <path d="M 134,120 Q 125,100 120,106" stroke="#2a7cd1" stroke-width="1.5" fill="none" stroke-linecap="round" />
+      <path d="M 138,120 Q 150,102 155,108" stroke="#2a7cd1" stroke-width="2" fill="none" stroke-linecap="round" />
+    </g>
+
+    <!-- THE JUMPING ORCA (Scale down and translate inside the spinner) -->
+    <g class="jumping-orca">
+      <!-- Orca Body -->
+      <path class="orca-black" d="M -10,60 C -15,40, 10,0, 35,-30 C 60,-55, 100,-60, 130,-45 C 160,-40, 175,-15, 170,5 C 160,20, 130,30, 105,30 C 75,30, 50,38, 20,58 C 2,70, -5,75, -10,60 Z" />
+      <!-- White Belly -->
+      <path class="orca-white" d="M 105,30 C 130,30, 160,20, 168,5 C 170,2, 160,-2, 145,0 C 120,4, 85,12, 60,20 C 35,28, 10,50, -2,62 C 5,55, 30,38, 60,30 C 78,27, 92,28, 105,30 Z" />
+      <!-- White Eye Patch -->
+      <ellipse class="orca-white" cx="112" cy="-25" rx="16" ry="5" transform="rotate(-15 112 -25)" />
+      <!-- Dorsal Fin -->
+      <path class="orca-black" d="M 50,-30 C 51,-60, 42,-100, 45,-105 C 50,-95, 65,-60, 72,-42 Z" />
+      <!-- Flipper -->
+      <path class="orca-black" d="M 85,15 C 72,15, 60,35, 58,48 C 62,42, 80,28, 85,15 Z" />
+      <!-- Tail stem and fluke -->
+      <path class="orca-black" d="M -5,58 C -15,58, -30,40, -40,35 C -35,45, -20,62, -5,65 Z" />
+    </g>
+
+    <!-- Animated Ocean Waves (Horizontal scrolling) -->
+    <g class="animated-waves">
+      <!-- Background Wave Path (Slightly darker blue, low opacity) -->
+      <path class="color-wave-back" d="M 0,118 Q 15,110 30,118 T 60,118 T 90,118 T 120,118 T 150,118 T 180,118 T 210,118 T 240,118 T 270,118 T 300,118" />
+      <!-- Mid-ground Wave Path -->
+      <path class="color-wave-mid" d="M -15,124 Q 0,116 15,124 T 45,124 T 75,124 T 105,124 T 135,124 T 165,124 T 195,124 T 225,124 T 255,124 T 285,124" opacity="0.75" />
+      <!-- Foreground Wave Path (Brightest blue) -->
+      <path class="color-wave-front" d="M -30,130 Q -15,122 0,130 T 30,130 T 60,130 T 90,130 T 120,130 T 150,130 T 180,130 T 210,130 T 240,130 T 270,130" />
+    </g>
+
+  </g>
+</svg>

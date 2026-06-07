@@ -1,0 +1,83 @@
+{
+    "status": "connected",
+    "timestamp": "2026-06-07T17:01:30.343843",
+    "active_tasks": 374,
+    "task_events": 13850,
+    "total_projects": 292,
+    "active_sessions": 121,
+    "active_sandboxes": 16,
+    "api_latency": 38,
+    "risk_intercepts": 3,
+    "token_burn": {
+        "input": 1249619,
+        "output": 84095,
+        "cached": 302000
+    },
+    "model_health": [
+        {
+            "alias": "planning",
+            "target": "claude-3-5-sonnet",
+            "cost": 0.015,
+            "status": "healthy"
+        },
+        {
+            "alias": "gemini_flash",
+            "target": "gemini-1.5-flash",
+            "cost": 0.0003,
+            "status": "healthy"
+        },
+        {
+            "alias": "general",
+            "target": "gpt-4o",
+            "cost": 0.015,
+            "status": "warn"
+        },
+        {
+            "alias": "report_gen",
+            "target": "claude-3-haiku",
+            "cost": 0.00125,
+            "status": "healthy"
+        }
+    ],
+    "recent_dockets": [
+        {
+            "id": "gdk-task-091a",
+            "intent": "Generate Quote & Scope Validation",
+            "status": "sealed",
+            "model": "claude-3-5-sonnet",
+            "timestamp": "2026-06-07 01:21:40",
+            "sha": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "payload": {
+                "client": "TelcoCorp Inc",
+                "assigned_agent": "OrderToQuoteAgent",
+                "budget_utilized": "$0.34",
+                "verification_status": "SUCCESS"
+            }
+        },
+        {
+            "id": "gdk-task-42bf",
+            "intent": "Retrieve Infrastructure Context Graph",
+            "status": "sealed",
+            "model": "gemini-1.5-flash",
+            "timestamp": "2026-06-07 01:20:02",
+            "sha": "8f3a3a165df93a408711a3b10c992798e3b0c44298fc1c149afbf4c8996fb924",
+            "payload": {
+                "database": "platform.db",
+                "total_nodes_extracted": 104,
+                "vector_indices": "PINECONE_NSAM_PROD"
+            }
+        },
+        {
+            "id": "gdk-task-e19c",
+            "intent": "Execute Outbound System DB Write",
+            "status": "failed",
+            "model": "gpt-4o",
+            "timestamp": "2026-06-07 01:20:55",
+            "sha": "992a77b10291e98fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852",
+            "payload": {
+                "action": "SQL_INSERT",
+                "error_message": "Boundary Intercept: Target domain not on secure allowlist."
+            }
+        }
+    ]
+}

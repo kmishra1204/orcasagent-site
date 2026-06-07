@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OrcasAgent&trade; | NSAM Operational Dashboard</title>
+    <meta name="description" content="NSAM Operational Dashboard governed by OrcasAgent&trade;">
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Brand",
+      "name": "OrcasAgent",
+      "logo": "https://orcasagent.ai/logo/orcas-cute.svg",
+      "slogan": "Governed enterprise agent operations from intent to outcome.",
+      "brand": {
+        "@type": "Brand",
+        "name": "OrcasAgent"
+      },
+      "award": "Trademark claimed by Karunanidhi Mishra",
+      "proprietaryName": "OrcasAgent",
+      "owner": {
+        "@type": "Person",
+        "name": "Karunanidhi Mishra",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "1713 Pelha Dr",
+          "addressLocality": "Aubrey",
+          "addressRegion": "TX",
+          "postalCode": "76227",
+          "addressCountry": "US"
+        }
+      }
+    }
+    </script>
+    <!-- Preconnect for Performance Optimization -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Style Sheets -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dashboard.css">
+    
+    <!-- FontAwesome Icons for Dashboard Navigation -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="dashboard-body theme-cyberpunk">
+    
+    <!-- Dashboard Layout Grid -->
+    <div class="dashboard-layout">
+        
+        <!-- Sidebar overlay for mobile dismissal -->
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+        
+        <!-- Global Sidebar (Left) -->
+        <nav class="dashboard-sidebar" id="dashboard-sidebar">
+            <div class="sidebar-brand">
+                <i class="fa-solid fa-water animate-pulse"></i>
+                <span>OrcasAgent&trade;</span>
+            </div>
+            
+            <ul class="sidebar-nav">
+                <li class="nav-item active" data-tab="mission-control">
+                    <i class="fa-solid fa-satellite-dish"></i>
+                    <span>Mission Control</span>
+                </li>
+                <li class="nav-item" data-tab="swarm-topology">
+                    <i class="fa-solid fa-project-diagram"></i>
+                    <span>Swarm Topology</span>
+                </li>
+                <li class="nav-item" data-tab="integrations">
+                    <i class="fa-solid fa-plug"></i>
+                    <span>Integrations</span>
+                </li>
+                <li class="nav-item" data-tab="docket-vault">
+                    <i class="fa-solid fa-vault"></i>
+                    <span>Docket Vault</span>
+                </li>
+                <li class="nav-item" data-tab="fleet-routing">
+                    <i class="fa-solid fa-route"></i>
+                    <span>Fleet Routing</span>
+                </li>
+                <li class="nav-item" data-tab="governance">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span>Governance</span>
+                </li>
+                <li class="nav-item" data-tab="runbooks">
+                    <i class="fa-solid fa-book-journal-whills"></i>
+                    <span>AI Runbooks</span>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <div class="theme-selector-label">SYSTEM CORES</div>
+                <div class="theme-selector">
+                    <button class="theme-btn active" data-theme="theme-cyberpunk" title="Cyberpunk"><span style="background: #D112BA"></span></button>
+                    <button class="theme-btn" data-theme="theme-azure" title="Azure"><span style="background: #12B8D7"></span></button>
+                    <button class="theme-btn" data-theme="theme-emerald" title="Emerald"><span style="background: #16A37B"></span></button>
+                    <button class="theme-btn" data-theme="theme-twilight" title="Twilight"><span style="background: #9B5DE5"></span></button>
+                </div>
+                <a href="index.html" class="btn-return" style="margin-bottom: 0.5rem;"><i class="fa-solid fa-arrow-left"></i> Main Site</a>
+                <div style="font-size: 0.6rem; color: #6b7280; text-align: center; margin-top: 0.5rem; line-height: 1.3;">
+                    OrcasAgent™ and the Orcas mascot logo are trademarks of Karunanidhi Mishra. All rights reserved.
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="dashboard-main">
+            
+            <!-- Telemetry Header -->
+            <header class="dashboard-header">
+                <div class="header-left-group">
+                    <!-- Hamburger toggle button for mobile/tablet drawer -->
+                    <button class="sidebar-toggle" id="sidebar-toggle-btn" aria-label="Toggle Navigation Menu">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    
+                    <div class="header-title">
+                        <h1 id="active-tab-title">Mission Control</h1>
+                        <p id="active-tab-desc">Global telemetry and mesh health</p>
+                    </div>
+                </div>
+                
+                <div class="telemetry-ticker">
+                    <div class="ticker-item">
+                        <span class="ticker-label">ORCAS STATUS</span>
+                        <span class="ticker-value text-glow-cyan" id="orcas-status-indicator"><i class="fa-solid fa-circle-check animate-pulse"></i> OPERATIONAL</span>
+                    </div>
+                    <div class="ticker-item hide-on-mobile">
+                        <span class="ticker-label">ACTIVE SANDBOXES</span>
+                        <span class="ticker-value" id="active-sandboxes-val">12 / 50</span>
+                    </div>
+                    <div class="ticker-item hide-on-tablet">
+                        <span class="ticker-label">API LATENCY</span>
+                        <span class="ticker-value" id="api-latency-val">42ms</span>
+                    </div>
+                    <div class="ticker-item">
+                        <span class="ticker-label">RISK INTERCEPTS (24H)</span>
+                        <span class="ticker-value text-red" id="risk-intercepts-val">3</span>
+                    </div>
+                </div>
+                
+                <div class="header-profile">
+                    <div class="profile-avatar">SRE</div>
+                </div>
+            </header>
+
+            <!-- Tab Contents Container -->
+            <div class="dashboard-content-wrapper">
+                
+                <!-- Tab 1: Mission Control -->
+                <section id="tab-mission-control" class="tab-pane active">
+                    <div class="dashboard-grid mission-control-grid">
+                        
+                        <div class="widget card-glass span-2">
+                            <div class="widget-header">
+                                <h3><i class="fa-solid fa-microchip"></i> Live Docket Throughput</h3>
+                                <span class="badge">webui_gateway.db</span>
+                            </div>
+                            <div class="widget-body">
+                                <div class="chart-container" id="docket-throughput-chart-wrapper">
+                                    <canvas id="throughput-line-chart"></canvas>
+                                </div>
+                                <div class="widget-stats">
+                                    <div class="stat-block">
+                                        <span class="stat-num" id="stat-active-tasks">105</span>
+                                        <span class="stat-label">Active Tasks</span>
+                                    </div>
+                                    <div class="stat-block">
+                                        <span class="stat-num" id="stat-task-events">4,262</span>
+                                        <span class="stat-label">Task Events</span>
+                                    </div>
+                                    <div class="stat-block">
+                                        <span class="stat-num" id="stat-projects">61</span>
+                                        <span class="stat-label">Total Projects</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="widget card-glass">
+                            <div class="widget-header">
+                                <h3><i class="fa-solid fa-fire-flame-curved"></i> Token Usage Burn</h3>
+                                <span class="badge">sam.log</span>
+                            </div>
+                            <div class="widget-body">
+                                <div class="token-odometer">
+                                    <div class="odometer-row">
+                                        <span class="o-label">Input Tokens:</span>
+                                        <span class="o-val text-primary" id="tk-in">1,249,619</span>
+                                    </div>
+                                    <div class="odometer-row">
+                                        <span class="o-label">Output Tokens:</span>
+                                        <span class="o-val text-primary" id="tk-out">84,095</span>
+                                    </div>
+                                    <div class="odometer-row">
+                                        <span class="o-label">Cached Tokens:</span>
+                                        <span class="o-val text-muted" id="tk-cache">302,000</span>
+                                    </div>
+                                </div>
+                                <div class="mini-chart-container" id="sparkline-tokens-wrapper">
+                                    <canvas id="tokens-sparkline-canvas"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="widget card-glass">
+                            <div class="widget-header">
+                                <h3><i class="fa-solid fa-server"></i> Active Sessions</h3>
+                                <span class="badge">orchestrator.db</span>
+                            </div>
+                            <div class="widget-body session-list" id="active-sessions-list">
+                                <!-- Populated dynamically by JS -->
+                            </div>
+                        </div>
+
+                        <div class="widget card-glass span-2-tablet span-3-desktop">
+                            <div class="widget-header">
+                                <h3><i class="fa-solid fa-brain"></i> Platform Model Health</h3>
+                                <span class="badge">platform.db</span>
+                            </div>
+                            <div class="widget-body model-health-grid" id="model-health-grid">
+                                <!-- Populated dynamically by JS -->
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- Tab 2: Swarm Topology -->
+                <section id="tab-swarm-topology" class="tab-pane">
+                    <div class="topology-container card-glass">
+                        <div class="topology-header">
+                            <h2>NSAM Native Agent Mesh</h2>
+                            <div class="topology-controls">
+                                <button class="btn-sm" id="btn-zoom-in" title="Zoom In"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
+                                <button class="btn-sm" id="btn-zoom-out" title="Zoom Out"><i class="fa-solid fa-magnifying-glass-minus"></i></button>
+                                <button class="btn-sm" id="btn-zoom-reset" title="Reset View"><i class="fa-solid fa-compress"></i></button>
+                            </div>
+                        </div>
+                        <div class="topology-canvas-wrapper" id="topology-canvas-container">
+                            <canvas id="swarm-canvas"></canvas>
+                        </div>
+                        <div class="topology-sidebar" id="node-inspector">
+                            <div class="inspector-header">
+                                <h3><i class="fa-solid fa-robot"></i> Agent Inspector</h3>
+                                <button class="inspector-close" id="btn-inspector-close"><i class="fa-solid fa-xmark"></i></button>
+                            </div>
+                            <div class="inspector-body" id="inspector-content">
+                                <div class="inspector-empty">Select an active agent node to inspect its execution state, memory payload, and sandbox logs.</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Tab 3: Integrations & Data Mesh -->
+                <section id="tab-integrations" class="tab-pane">
+                    <div class="integrations-container">
+                        
+                        <div class="integration-category">
+                            <h3 class="category-title"><i class="fa-solid fa-database"></i> Memory & Data Mesh</h3>
+                            <div class="integrations-grid" id="data-mesh-grid">
+                                <!-- Populated dynamically by JS -->
+                            </div>
+                        </div>
+
+                        <div class="integration-category">
+                            <h3 class="category-title"><i class="fa-solid fa-bolt"></i> Compute & Execution Sandboxes</h3>
+                            <div class="integrations-grid" id="compute-sandbox-grid">
+                                <!-- Populated dynamically by JS -->
+                            </div>
+                        </div>
+
+                        <div class="integration-category">
+                            <h3 class="category-title"><i class="fa-solid fa-square-poll-horizontal"></i> Workflow & External Handshakes</h3>
+                            <div class="integrations-grid" id="workflow-mesh-grid">
+                                <!-- Populated dynamically by JS -->
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- Tab 4: Docket Vault & Evidence -->
+                <section id="tab-docket-vault" class="tab-pane">
+                    <div class="vault-container">
+                        
+                        <div class="vault-header card-glass">
+                            <div class="search-input-wrapper">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <input type="text" id="vault-search-input" placeholder="Search dockets by Intent, Task ID, or SHA-256 seal...">
+                            </div>
+                            <div class="filter-dropdown-wrapper">
+                                <select id="vault-status-filter" class="filter-select">
+                                    <option value="all">All Audit Statuses</option>
+                                    <option value="sealed">Sealed (Verified)</option>
+                                    <option value="failed">Failed Verification</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="vault-content-split">
+                            <!-- Left: Docket Grid List -->
+                            <div class="vault-records-list-wrapper">
+                                <div class="vault-records-list" id="vault-records-container">
+                                    <!-- Populated dynamically by JS -->
+                                </div>
+                            </div>
+
+                            <!-- Right: Splitted Evidence Inspector -->
+                            <div class="vault-evidence-inspector card-glass" id="vault-evidence-panel">
+                                <div class="inspector-unselected" id="evidence-unselected-msg">
+                                    <i class="fa-solid fa-file-signature"></i>
+                                    <h4>No Docket Selected</h4>
+                                    <p>Select a cryptographic record from the audit trail to inspect its evidence chain and ledger payload.</p>
+                                </div>
+                                <div class="inspector-selected hidden" id="evidence-selected-content">
+                                    <!-- Populated dynamically by JS on selection -->
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- Tab 5: Fleet & Model Routing -->
+                <section id="tab-fleet-routing" class="tab-pane">
+                    <div class="fleet-layout">
+                        
+                        <div class="fleet-control-cards">
+                            <!-- Model Registry Toggles -->
+                            <div class="widget card-glass">
+                                <div class="widget-header">
+                                    <h3><i class="fa-solid fa-cubes-stacked"></i> Model Registry Configuration</h3>
+                                    <span class="badge">active alias map</span>
+                                </div>
+                                <div class="widget-body">
+                                    <table class="model-registry-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Alias</th>
+                                                <th>Target Model</th>
+                                                <th>Cost/1K</th>
+                                                <th>Routing Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="model-registry-tbody">
+                                            <!-- Hydrated dynamically by JS -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Workload Allocators -->
+                            <div class="widget card-glass">
+                                <div class="widget-header">
+                                    <h3><i class="fa-solid fa-sliders"></i> Smart Routing Balance</h3>
+                                    <span class="badge">dynamic optimization</span>
+                                </div>
+                                <div class="widget-body">
+                                    <div class="routing-slider-group">
+                                        <div class="slider-label-row">
+                                            <span class="slider-label">General Assistant Tasks</span>
+                                            <span class="slider-val" id="slide-val-general">40%</span>
+                                        </div>
+                                        <input type="range" class="routing-slider" id="slider-general" min="0" max="100" value="40">
+                                    </div>
+                                    <div class="routing-slider-group">
+                                        <div class="slider-label-row">
+                                            <span class="slider-label">Analytical / Planning Tasks</span>
+                                            <span class="slider-val" id="slide-val-planning">35%</span>
+                                        </div>
+                                        <input type="range" class="routing-slider" id="slider-planning" min="0" max="100" value="35">
+                                    </div>
+                                    <div class="routing-slider-group">
+                                        <div class="slider-label-row">
+                                            <span class="slider-label">Bulk Summarization Tasks</span>
+                                            <span class="slider-val" id="slide-val-flash">25%</span>
+                                        </div>
+                                        <input type="range" class="routing-slider" id="slider-flash" min="0" max="100" value="25">
+                                    </div>
+                                    <div class="routing-summary-banner" id="slider-alloc-banner">
+                                        <i class="fa-solid fa-circle-info"></i> Allocations sum up to 100% (Balanced Mode).
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Routing Metrics Visualizer -->
+                        <div class="widget card-glass fleet-metrics-panel">
+                            <div class="widget-header">
+                                <h3><i class="fa-solid fa-chart-bar"></i> Live Routing Metrics</h3>
+                                <span class="badge">latency vs cost</span>
+                            </div>
+                            <div class="widget-body fleet-chart-container">
+                                <div class="metrics-visuals">
+                                    <div class="metrics-column">
+                                        <span class="metric-visual-label">Avg Query Cost</span>
+                                        <div class="metric-gauge-wrapper">
+                                            <svg class="gauge-svg" viewBox="0 0 100 50">
+                                                <path d="M 10 50 A 40 40 0 0 1 90 50" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="8"></path>
+                                                <path id="gauge-cost-fill" d="M 10 50 A 40 40 0 0 1 90 50" fill="none" stroke="var(--color-primary)" stroke-width="8" stroke-dasharray="125" stroke-dashoffset="45"></path>
+                                            </svg>
+                                            <span class="gauge-center-text" id="gauge-cost-text">$0.012</span>
+                                        </div>
+                                    </div>
+                                    <div class="metrics-column">
+                                        <span class="metric-visual-label">Global Latency</span>
+                                        <div class="metric-gauge-wrapper">
+                                            <svg class="gauge-svg" viewBox="0 0 100 50">
+                                                <path d="M 10 50 A 40 40 0 0 1 90 50" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="8"></path>
+                                                <path id="gauge-latency-fill" d="M 10 50 A 40 40 0 0 1 90 50" fill="none" stroke="var(--color-primary)" stroke-width="8" stroke-dasharray="125" stroke-dashoffset="75"></path>
+                                            </svg>
+                                            <span class="gauge-center-text" id="gauge-latency-text">425ms</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="sparkline-bar-group">
+                                    <div class="sparkline-bar-row">
+                                        <span class="bar-label">Cache Hit Ratio</span>
+                                        <div class="bar-track">
+                                            <div class="bar-fill" id="bar-cache-hit" style="width: 74%;"></div>
+                                        </div>
+                                        <span class="bar-val">74%</span>
+                                    </div>
+                                    <div class="sparkline-bar-row">
+                                        <span class="bar-label">Queue Backlog</span>
+                                        <div class="bar-track">
+                                            <div class="bar-fill" id="bar-queue" style="width: 15%; background: var(--color-green-500)"></div>
+                                        </div>
+                                        <span class="bar-val">3 / 50</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- Tab 6: Governance & Security -->
+                <section id="tab-governance" class="tab-pane">
+                    <div class="governance-layout">
+                        
+                        <div class="gov-column">
+                            <!-- Budget Caps -->
+                            <div class="widget card-glass">
+                                <div class="widget-header">
+                                    <h3><i class="fa-solid fa-hand-holding-dollar"></i> Operational Budget Governance</h3>
+                                    <span class="badge">Platform Guardrails</span>
+                                </div>
+                                <div class="widget-body">
+                                    <div class="budget-stat-row">
+                                        <div>
+                                            <span class="b-lbl">MONTHLY BUDGET</span>
+                                            <h4 id="val-monthly-budget">$15,000.00</h4>
+                                        </div>
+                                        <div style="text-align: right;">
+                                            <span class="b-lbl">SPENT TO DATE</span>
+                                            <h4 class="text-glow-cyan" id="val-spent-to-date">$4,129.50</h4>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="budget-progress-bar">
+                                        <div class="progress-fill" id="budget-progress-fill" style="width: 27.53%;"></div>
+                                    </div>
+                                    
+                                    <div class="control-slider-block">
+                                        <div class="slider-label-row">
+                                            <span class="slider-label">Hard Monthly Limit ($)</span>
+                                            <span class="slider-val" id="label-hard-limit">$15,000</span>
+                                        </div>
+                                        <input type="range" class="routing-slider" id="slider-hard-limit" min="2000" max="50000" step="500" value="15000">
+                                    </div>
+
+                                    <div class="control-slider-block">
+                                        <div class="slider-label-row">
+                                            <span class="slider-label">Soft Alert Warning Threshold (%)</span>
+                                            <span class="slider-val" id="label-alert-thresh">80%</span>
+                                        </div>
+                                        <input type="range" class="routing-slider" id="slider-alert-thresh" min="50" max="95" step="5" value="80">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Human In The Loop approval gates -->
+                            <div class="widget card-glass">
+                                <div class="widget-header">
+                                    <h3><i class="fa-solid fa-users-gear"></i> Supervisor Approval Gates (Human-In-The-Loop)</h3>
+                                    <span class="badge">Mandatory Audits</span>
+                                </div>
+                                <div class="widget-body">
+                                    <div class="approval-gate-list">
+                                        <div class="approval-row">
+                                            <div class="approval-info">
+                                                <span class="gate-title">Direct Database Writes (`sqlite3`)</span>
+                                                <span class="gate-desc">Requires human validation before writing modified data models to core schemas.</span>
+                                            </div>
+                                            <label class="toggle-switch">
+                                                <input type="checkbox" id="gate-db-write" checked>
+                                                <span class="toggle-slider"></span>
+                                            </label>
+                                        </div>
+                                        <div class="approval-row">
+                                            <div class="approval-info">
+                                                <span class="gate-title">External Outbound API Handshakes</span>
+                                                <span class="gate-desc">Intercept requests to untrusted web domains and await approval.</span>
+                                            </div>
+                                            <label class="toggle-switch">
+                                                <input type="checkbox" id="gate-outbound-api" checked>
+                                                <span class="toggle-slider"></span>
+                                            </label>
+                                        </div>
+                                        <div class="approval-row">
+                                            <div class="approval-info">
+                                                <span class="gate-title">Docker Sandbox Provisioning</span>
+                                                <span class="gate-desc">Permit automated sandboxing of code blocks dynamically.</span>
+                                            </div>
+                                            <label class="toggle-switch">
+                                                <input type="checkbox" id="gate-sandbox-provision">
+                                                <span class="toggle-slider"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sandbox Isolation Boundaries & Domain blocklists -->
+                        <div class="gov-column">
+                            <div class="widget card-glass height-full">
+                                <div class="widget-header">
+                                    <h3><i class="fa-solid fa-shield-halved"></i> Threat & Boundary Controls</h3>
+                                    <span class="badge">Sandbox isolation</span>
+                                </div>
+                                <div class="widget-body blocklist-body">
+                                    <div class="blocklist-desc">
+                                        Define network boundary blacklists for autonomous sub-agents executing in sandboxed environments. Prevents prompt-injection-driven exfiltration.
+                                    </div>
+                                    
+                                    <div class="blocklist-section">
+                                        <span class="blocklist-title">Outbound Domain Blacklist</span>
+                                        <div class="tag-input-container" id="tag-input-container">
+                                            <!-- Dynamically hydrated tags -->
+                                            <input type="text" id="blacklist-tag-input" class="tag-input" placeholder="Add domain (e.g. evil.com) and press Enter">
+                                        </div>
+                                    </div>
+
+                                    <div class="blocklist-section">
+                                        <span class="blocklist-title">Execution Safety Level</span>
+                                        <div class="safety-modes">
+                                            <div class="safety-mode-card active" data-level="high">
+                                                <i class="fa-solid fa-lock text-glow-cyan"></i>
+                                                <div>
+                                                    <span class="mode-name">High (Restricted Sandbox)</span>
+                                                    <span class="mode-desc">Absolute isolation. Network off, full SRE approval.</span>
+                                                </div>
+                                            </div>
+                                            <div class="safety-mode-card" data-level="medium">
+                                                <i class="fa-solid fa-lock-open" style="color: var(--color-amber-500)"></i>
+                                                <div>
+                                                    <span class="mode-name">Medium (Monitored Network)</span>
+                                                    <span class="mode-desc">Limited outbound via whitelist proxies. Log all frames.</span>
+                                                </div>
+                                            </div>
+                                            <div class="safety-mode-card" data-level="relaxed">
+                                                <i class="fa-solid fa-triangle-exclamation text-red"></i>
+                                                <div>
+                                                    <span class="mode-name">Relaxed (Permissive Mode)</span>
+                                                    <span class="mode-desc">Direct container access. High vulnerability risk.</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- Tab 7: AI Runbooks -->
+                <section id="tab-runbooks" class="tab-pane">
+                    <div class="runbooks-layout">
+                        
+                        <!-- Left: Document Navigation -->
+                        <div class="runbooks-nav card-glass" id="runbooks-nav-list">
+                            <!-- Populated dynamically by JS -->
+                        </div>
+
+                        <!-- Right: Document Viewer -->
+                        <div class="runbooks-viewer card-glass" id="runbook-viewer-panel">
+                            <div class="viewer-header">
+                                <div class="viewer-header-info">
+                                    <span class="runbook-meta-tag" id="runbook-meta-type">STANDARD OPERATING PROCEDURE</span>
+                                    <h2 id="runbook-view-title">Loading documentation...</h2>
+                                    <span class="runbook-meta-date" id="runbook-meta-updated">Last Updated: June 2026</span>
+                                </div>
+                                <button class="btn-sm btn-runbook-copy" id="btn-copy-runbook" title="Copy Document Content"><i class="fa-solid fa-copy"></i> Copy Guide</button>
+                            </div>
+                            <hr class="runbook-divider">
+                            <div class="viewer-content markdown-body" id="runbook-rendered-content">
+                                <!-- Populated dynamically by JS -->
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+            </div>
+        </main>
+        
+        <!-- SRE Orca Guidance Companion -->
+        <div id="orca-companion" class="sre-companion">
+            <div class="companion-bubble hidden" id="companion-bubble">
+                <div class="bubble-header">
+                    <span class="bubble-title"><i class="fa-solid fa-robot"></i> OrcasAgent&trade; SRE Insight</span>
+                    <button class="bubble-close" id="btn-companion-close"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="bubble-content" id="companion-text">
+                    Monitoring system telemetry. All core sqlite databases mapped. Click me to cycle through AI-intrinsic insights.
+                </div>
+            </div>
+            <div class="companion-avatar" id="companion-avatar" title="OrcasAgent™ SRE Companion">
+                <!-- Inline SVG Orca -->
+                <svg viewBox="0 0 100 100" class="orca-svg" width="60" height="60">
+                    <path d="M10,50 Q30,20 50,50 T90,50" fill="none" stroke="currentColor" stroke-width="4" />
+                    <circle cx="25" cy="40" r="4" fill="currentColor" />
+                    <!-- Orcas Fin details -->
+                    <path d="M48,35 Q60,15 65,30 Z" fill="currentColor" />
+                    <!-- Water Blowhole spray -->
+                    <path d="M25,30 Q25,10 20,8 M25,30 Q28,10 32,12" fill="none" stroke="var(--glow-cyan, #12B8D7)" stroke-width="2" class="spray-path" />
+                </svg>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Dashboard Scripts -->
+    <script src="dashboard.js"></script>
+</body>
+</html>

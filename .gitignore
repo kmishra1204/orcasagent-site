@@ -1,0 +1,10 @@
+# Backup files
+*.bak
+index.html.bak
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Telemetry / Live JSON if temporary
+# telemetry_live.json

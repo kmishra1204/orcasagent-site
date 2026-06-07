@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <style>
+      .bg-dark { fill: #000000; }
+      .wave-line { fill: none; stroke: #265d8f; stroke-width: 14; stroke-linecap: round; stroke-linejoin: round; }
+      .orca-body { fill: #2c2f38; }
+      .orca-white { fill: #e1e4eb; }
+      .orca-light-grey { fill: #979ba6; }
+    </style>
+  </defs>
+
+  <!-- Black Background Circle for Icon Layout (or transparent depending on usage - black background matches user's upload) -->
+  <rect width="100%" height="100%" fill="none" />
+
+  <!-- The Orca Whale (Leaping out of water) -->
+  <g transform="translate(10, -10)">
+    <!-- Right Flipper (Background, small shadow) -->
+    <path d="M 310,250 C 310,250, 340,300, 360,300 C 350,280, 320,240, 310,250 Z" fill="#1b1d24" />
+
+    <!-- Tail stem and back fluke (under main body) -->
+    <path class="orca-body" d="M 120,380 C 100,380, 75,340, 60,330 C 70,350, 95,385, 120,390 Z" />
+
+    <!-- Main Body Shape -->
+    <!-- From tail to head, curving beautifully -->
+    <path class="orca-body" d="M 112,382 
+             C 105,340, 160,250, 220,180 
+             C 270,120, 350,110, 420,140 
+             C 480,165, 500,210, 490,240 
+             C 475,270, 410,290, 360,290 
+             C 300,290, 240,305, 180,345
+             C 140,372, 125,385, 112,382 Z" />
+
+    <!-- White Underbelly Throat & Stomach Patch -->
+    <path class="orca-white" d="M 360,290 
+             C 410,290, 470,270, 485,242 
+             C 488,237, 470,230, 440,235 
+             C 390,242, 315,260, 260,278 
+             C 210,295, 155,345, 130,370 
+             C 145,355, 195,310, 260,295
+             C 300,288, 330,290, 360,290 Z" />
+
+    <!-- White Eye/Head Patch -->
+    <ellipse class="orca-white" cx="370" cy="175" rx="35" ry="12" transform="rotate(-15 370 175)" />
+
+    <!-- Light Grey Flank Accent Dashes -->
+    <path class="orca-light-grey" d="M 230,215 C 245,200, 265,188, 275,180" fill="none" stroke="#979ba6" stroke-width="12" stroke-linecap="round" />
+    <path class="orca-light-grey" d="M 195,248 C 210,232, 225,220, 235,212" fill="none" stroke="#979ba6" stroke-width="12" stroke-linecap="round" />
+
+    <!-- Dorsal Fin -->
+    <path class="orca-body" d="M 245,170 C 248,110, 230,20, 235,10 C 245,30, 275,100, 290,140 Z" />
+
+    <!-- Foreground Left Flipper -->
+    <path class="orca-body" d="M 315,260 C 290,260, 260,300, 255,325 C 265,315, 300,285, 315,260 Z" />
+    <path class="orca-light-grey" d="M 310,263 C 295,268, 275,295, 270,312 C 275,305, 300,282, 310,263 Z" />
+  </g>
+
+  <!-- Ocean Wave Lines at bottom (4 overlapping horizontal waves) -->
+  <g transform="translate(0, 10)">
+    <!-- Wave Row 4 (Background) -->
+    <path class="wave-line" d="M 10,430 Q 72.75,400 135.5,430 T 261,430 T 386.5,430 T 502,430" opacity="0.4" />
+    <!-- Wave Row 3 -->
+    <path class="wave-line" d="M 10,450 Q 72.75,420 135.5,450 T 261,450 T 386.5,450 T 502,450" opacity="0.6" />
+    <!-- Wave Row 2 -->
+    <path class="wave-line" d="M 10,470 Q 72.75,440 135.5,470 T 261,470 T 386.5,470 T 502,470" opacity="0.8" />
+    <!-- Wave Row 1 (Foreground) -->
+    <path class="wave-line" d="M 10,490 Q 72.75,460 135.5,490 T 261,490 T 386.5,490 T 502,490" />
+  </g>
+
+</svg>

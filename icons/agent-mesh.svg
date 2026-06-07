@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <style>
+      .bg-circle { fill: #f3d1a7; }
+      .outline { stroke: #3d3b57; stroke-width: 14; stroke-linecap: round; stroke-linejoin: round; }
+      .conn-line { stroke: #3d3b57; stroke-width: 14; stroke-linecap: round; stroke-linejoin: round; }
+      .node-bg { fill: #b8daf2; }
+      .user-head { fill: #ffffff; }
+      .user-body { fill: #f59698; }
+      .small-node { fill: #f59698; }
+    </style>
+  </defs>
+
+  <!-- Circle Background -->
+  <circle class="bg-circle" cx="256" cy="256" r="240" />
+
+  <!-- Connection Lines (Underneath nodes) -->
+  <!-- Main vertical spine -->
+  <line class="conn-line" x1="256" y1="130" x2="256" y2="400" />
+  <!-- Diagonal branching left -->
+  <line class="conn-line" x1="256" y1="280" x2="140" y2="350" />
+  <!-- Diagonal branching right -->
+  <line class="conn-line" x1="256" y1="280" x2="372" y2="350" />
+  <!-- Bottom horizontal distribution bar -->
+  <line class="conn-line" x1="180" y1="380" x2="332" y2="380" />
+  <!-- Down stems for bottom small nodes -->
+  <line class="conn-line" x1="180" y1="380" x2="180" y2="420" />
+  <line class="conn-line" x1="332" y1="380" x2="332" y2="420" />
+
+  <!-- Bottom Small Pink Nodes -->
+  <circle class="small-node outline" cx="180" cy="420" r="18" />
+  <circle class="small-node outline" cx="256" cy="420" r="18" />
+  <circle class="small-node outline" cx="332" cy="420" r="18" />
+
+  <!-- Node 1 (Top Centered) -->
+  <g transform="translate(256, 130)">
+    <circle class="node-bg outline" cx="0" cy="0" r="64" />
+    <!-- User Silhouette -->
+    <!-- Head -->
+    <rect class="user-head outline" x="-15" y="-35" width="30" height="36" rx="15" />
+    <!-- Body -->
+    <path class="user-body outline" d="M -32,25 C -32,-3, 32,-3, 32,25 Z" />
+  </g>
+
+  <!-- Node 2 (Left Centered) -->
+  <g transform="translate(130, 260)">
+    <circle class="node-bg outline" cx="0" cy="0" r="64" />
+    <!-- User Silhouette -->
+    <!-- Head -->
+    <rect class="user-head outline" x="-15" y="-35" width="30" height="36" rx="15" />
+    <!-- Body -->
+    <path class="user-body outline" d="M -32,25 C -32,-3, 32,-3, 32,25 Z" />
+  </g>
+
+  <!-- Node 3 (Right Centered) -->
+  <g transform="translate(382, 260)">
+    <circle class="node-bg outline" cx="0" cy="0" r="64" />
+    <!-- User Silhouette -->
+    <!-- Head -->
+    <rect class="user-head outline" x="-15" y="-35" width="30" height="36" rx="15" />
+    <!-- Body -->
+    <path class="user-body outline" d="M -32,25 C -32,-3, 32,-3, 32,25 Z" />
+  </g>
+
+</svg>

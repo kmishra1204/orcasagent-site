@@ -1,0 +1,145 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="100%" height="100%">
+  <!-- Definitions -->
+  <defs>
+    <style>
+      .grid-line { stroke: #c8ebd5; stroke-width: 1; }
+      .telemetry-bar { fill: #e60067; }
+      .outline { stroke: #081635; stroke-width: 4.5; stroke-linecap: round; stroke-linejoin: round; }
+      .fill-blue { fill: #12b8d7; }
+      .fill-pink { fill: #ff7c80; }
+      .fill-green { fill: #a2f51f; }
+      .fill-dark { fill: #081635; }
+      .fill-white { fill: #ffffff; }
+      .fill-tongue { fill: #ff5d7d; }
+      .brand-title {
+        font-family: 'Outfit', 'Space Grotesk', -apple-system, sans-serif;
+        font-weight: 700;
+        font-size: 28px;
+        letter-spacing: 0.14em;
+        fill: #081635;
+        text-anchor: middle;
+      }
+      .brand-subtitle {
+        font-family: 'Space Grotesk', 'Outfit', -apple-system, sans-serif;
+        font-weight: 500;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        fill: #081635;
+        text-anchor: middle;
+      }
+    </style>
+  </defs>
+
+  <!-- Background Grid Block -->
+  <rect x="0" y="0" width="400" height="300" fill="#e8f8f0" />
+  
+  <!-- Vertical Grid Lines (every 20px) -->
+  <line x1="20" y1="0" x2="20" y2="300" class="grid-line" />
+  <line x1="40" y1="0" x2="40" y2="300" class="grid-line" />
+  <line x1="60" y1="0" x2="60" y2="300" class="grid-line" />
+  <line x1="80" y1="0" x2="80" y2="300" class="grid-line" />
+  <line x1="100" y1="0" x2="100" y2="300" class="grid-line" />
+  <line x1="120" y1="0" x2="120" y2="300" class="grid-line" />
+  <line x1="140" y1="0" x2="140" y2="300" class="grid-line" />
+  <line x1="160" y1="0" x2="160" y2="300" class="grid-line" />
+  <line x1="180" y1="0" x2="180" y2="300" class="grid-line" />
+  <line x1="200" y1="0" x2="200" y2="300" class="grid-line" />
+  <line x1="220" y1="0" x2="220" y2="300" class="grid-line" />
+  <line x1="240" y1="0" x2="240" y2="300" class="grid-line" />
+  <line x1="260" y1="0" x2="260" y2="300" class="grid-line" />
+  <line x1="280" y1="0" x2="280" y2="300" class="grid-line" />
+  <line x1="300" y1="0" x2="300" y2="300" class="grid-line" />
+  <line x1="320" y1="0" x2="320" y2="300" class="grid-line" />
+  <line x1="340" y1="0" x2="340" y2="300" class="grid-line" />
+  <line x1="360" y1="0" x2="360" y2="300" class="grid-line" />
+  <line x1="380" y1="0" x2="380" y2="300" class="grid-line" />
+
+  <!-- Horizontal Grid Lines (every 20px) -->
+  <line x1="0" y1="20" x2="400" y2="20" class="grid-line" />
+  <line x1="0" y1="40" x2="400" y2="40" class="grid-line" />
+  <line x1="0" y1="60" x2="400" y2="60" class="grid-line" />
+  <line x1="0" y1="80" x2="400" y2="80" class="grid-line" />
+  <line x1="0" y1="100" x2="400" y2="100" class="grid-line" />
+  <line x1="0" y1="120" x2="400" y2="120" class="grid-line" />
+  <line x1="0" y1="140" x2="400" y2="140" class="grid-line" />
+  <line x1="0" y1="160" x2="400" y2="160" class="grid-line" />
+  <line x1="0" y1="180" x2="400" y2="180" class="grid-line" />
+  <line x1="0" y1="200" x2="400" y2="200" class="grid-line" />
+  <line x1="0" y1="220" x2="400" y2="220" class="grid-line" />
+  <line x1="0" y1="240" x2="400" y2="240" class="grid-line" />
+  <line x1="0" y1="260" x2="400" y2="260" class="grid-line" />
+  <line x1="0" y1="280" x2="400" y2="280" class="grid-line" />
+
+  <!-- Telemetry Blinking Pink Bars -->
+  <rect x="118" y="55" width="4" height="12" class="telemetry-bar" rx="1" />
+  <rect x="394" y="90" width="6" height="12" class="telemetry-bar" rx="1" />
+
+  <!-- Cute Orca Mascot Group (Centered) -->
+  <g transform="translate(80, 20)">
+    <!-- Right Flipper (Background) -->
+    <path class="outline fill-pink" d="M 175,130 C 182,130, 202,145, 208,155 C 200,158, 185,152, 175,142 C 170,137, 172,132, 175,130 Z" />
+    <path class="fill-blue outline" d="M 175,130 C 178,132, 192,142, 204,152 C 205,150, 205,146, 201,140 C 195,132, 185,130, 175,130 Z" />
+
+    <!-- Tail Fluke (Back lob) -->
+    <path class="outline fill-pink" d="M 40,82 C 32,80, 15,68, 12,68 C 16,80, 32,95, 45,95 C 43,90, 42,85, 40,82 Z" />
+    <path class="outline fill-blue" d="M 40,82 C 32,80, 15,68, 12,68 C 22,68, 38,78, 40,82 Z" stroke="none" />
+
+    <!-- Tail Stem & Main Body -->
+    <path class="outline fill-blue" d="M 45,95 
+             C 50,75, 75,55, 115,52 
+             C 155,52, 188,75, 188,110 
+             C 188,138, 160,158, 120,158 
+             C 95,158, 75,145, 62,132 
+             C 52,120, 40,115, 30,110
+             C 22,106, 22,102, 30,100
+             C 38,98, 42,98, 45,95 Z" />
+
+    <!-- Dorsal Fin -->
+    <path class="outline fill-blue" d="M 115,52 C 112,38, 102,30, 95,30 C 100,42, 105,48, 108,52" />
+    <path d="M 106,53 C 110,53, 113,52, 115,52" fill="none" stroke="#12b8d7" stroke-width="6" />
+
+    <!-- Tail Fluke Front Lob -->
+    <path class="outline fill-pink" d="M 30,110 C 22,106, 10,95, 8,95 C 14,105, 28,118, 40,118 C 38,115, 34,112, 30,110 Z" />
+
+    <!-- Underbelly (Lime green bottom segment with zig-zag edge) -->
+    <path class="outline fill-green" d="M 75,135 
+             C 85,145, 100,158, 120,158 
+             C 145,158, 172,145, 178,130
+             C 176,125, 165,118, 160,118
+             L 170,120 L 164,126 L 158,120 L 152,126 L 146,120 L 140,126 L 134,120 L 128,126 L 122,120 L 116,126 L 110,120 L 104,126 L 98,120 L 92,126 L 86,120 L 80,126 Z" />
+
+    <!-- Dashed Line inside Green Belly -->
+    <path d="M 85,140 C 100,150, 120,152, 140,148 C 152,145, 162,140, 168,135" fill="none" stroke="#081635" stroke-width="2.5" stroke-dasharray="6,6" stroke-linecap="round" />
+
+    <!-- Left Flipper (Foreground) -->
+    <path class="outline fill-pink" d="M 75,125 C 68,125, 50,138, 45,148 C 52,152, 68,145, 75,135 C 78,130, 78,126, 75,125 Z" />
+    <path class="outline fill-blue" d="M 75,125 C 72,127, 58,138, 48,148 C 47,146, 48,142, 52,135 C 58,128, 68,125, 75,125 Z" />
+
+    <!-- Eyes -->
+    <circle class="fill-dark" cx="125" cy="98" r="9" />
+    <circle class="fill-white" cx="127" cy="95" r="3.2" />
+    <circle class="fill-white" cx="123" cy="100" r="1.6" />
+
+    <circle class="fill-dark" cx="165" cy="100" r="9" />
+    <circle class="fill-white" cx="167" cy="97" r="3.2" />
+    <circle class="fill-white" cx="163" cy="102" r="1.6" />
+
+    <!-- Smiling Mouth -->
+    <path class="outline fill-dark" d="M 135,110 C 135,122, 155,122, 155,110 Z" />
+    <path d="M 141,116 C 143,113, 147,113, 149,116 C 147,120, 143,120, 141,116 Z" class="fill-tongue" />
+
+    <!-- Blushing Cheeks -->
+    <rect x="110" y="102" width="10" height="5" rx="2.5" fill="#ff7c80" opacity="0.8" transform="rotate(-10 115 104)" />
+    <rect x="172" y="104" width="10" height="5" rx="2.5" fill="#ff7c80" opacity="0.8" transform="rotate(10 177 106)" />
+
+    <!-- Blowhole -->
+    <path d="M 135,58 C 138,56, 144,56, 147,58" fill="none" stroke="#081635" stroke-width="2.5" stroke-linecap="round" />
+
+    <!-- White Highlight -->
+    <ellipse cx="145" cy="68" rx="14" ry="7" fill="#ffffff" opacity="0.4" transform="rotate(-25 145 68)" />
+  </g>
+
+  <!-- Typography Lockup -->
+  <text x="200" y="222" class="brand-title">ORCAS</text>
+  <text x="200" y="254" class="brand-subtitle">ENTERPRISE AGENTIC TRANSFORMATIONS</text>
+</svg>
